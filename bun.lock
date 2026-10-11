@@ -34,8 +34,8 @@
         "@sudobility/music_io": "^0.9.67",
         "@sudobility/music_lib": "^1.9.73",
         "@sudobility/music_player": "^0.1.61",
-        "@sudobility/music_spatial": "^0.0.16",
-        "@sudobility/music_spatial_core": "^0.0.16",
+        "@sudobility/music_spatial": "^0.0.17",
+        "@sudobility/music_spatial_core": "^0.0.17",
         "@sudobility/music_types": "^0.13.49",
         "@sudobility/seo_lib": "^0.0.39",
         "@sudobility/types": "^1.9.68",
@@ -473,9 +473,9 @@
 
     "@sudobility/music_player": ["@sudobility/music_player@0.1.61", "", { "peerDependencies": { "@sudobility/music_types": "^0.13.49", "js-synthesizer": "^1.13.0", "react": ">=18.0.0", "react-native-audio-api": ">=0.13.0" }, "optionalPeers": ["js-synthesizer", "react", "react-native-audio-api"] }, "sha512-XjpjOtXgCuGOpnwXTGDkg/UFHX72FQitSsY51+b90BFhIKWInFxhf9O0geMaYyYsA4EUDxldwagq/EkTMHoaeg=="],
 
-    "@sudobility/music_spatial": ["@sudobility/music_spatial@0.0.16", "", { "peerDependencies": { "@react-three/fiber": "^9.0.0", "@sudobility/music_spatial_core": "^0.0.16", "@sudobility/music_types": "^0.13.49", "react": ">=18", "react-dom": ">=18", "three": "^0.160.0" } }, "sha512-pE+zdJg6oTbdsm/SqsWXCxG8vedvHUJMeFLPSGBQ6xtdZbLC5B/TPXjCI8H0Fa4CF2GS47BxhOde0Wm7s4ebSw=="],
+    "@sudobility/music_spatial": ["@sudobility/music_spatial@0.0.17", "", { "peerDependencies": { "@react-three/fiber": "^9.0.0", "@sudobility/music_spatial_core": "^0.0.17", "@sudobility/music_types": "^0.13.49", "react": ">=18", "react-dom": ">=18", "three": "^0.160.0" } }, "sha512-CeR0wrOmvl8mrMURfFNwKBcnOD7cZBR9TeLacSQQFVfCmVxn4ION4Y8NvpwrmKIxZrNPHr+fKG9VycOxffY8AA=="],
 
-    "@sudobility/music_spatial_core": ["@sudobility/music_spatial_core@0.0.16", "", { "peerDependencies": { "@sudobility/music_types": "^0.13.49", "react": ">=18", "three": "^0.160.0" } }, "sha512-RXuPJ14Je0RWjoi/k+im8raNZHu4t0cFilnl0SIKQNjqPXMW7I2b+Ic6OD5SLE+O1ylXtEFPGLpMGQ4WwMhUGQ=="],
+    "@sudobility/music_spatial_core": ["@sudobility/music_spatial_core@0.0.17", "", { "peerDependencies": { "@sudobility/music_types": "^0.13.49", "react": ">=18", "three": "^0.160.0" } }, "sha512-LayIRrDZGQjzI0boj64YT0XYJ+rOOpUnV5uwm+JpBJtKCW6MpFJ7BGd3KjDjcuXcsMgJbg+raiQESQZvsOQJcQ=="],
 
     "@sudobility/music_types": ["@sudobility/music_types@0.13.49", "", { "peerDependencies": { "@sudobility/types": "^1.9.68", "immer": "^10.0.0 || ^11.0.0", "zod": "^4.0.0" } }, "sha512-4jXSBfeuAC5IQsbQVaE2wVvhwv4hITVO81bkLT7cO5Gk8BfzUOmJy3aaQs513lawi5LOS0YYF/fEv2l/OCsYHQ=="],
 
