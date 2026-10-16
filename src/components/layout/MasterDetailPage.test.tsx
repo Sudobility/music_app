@@ -70,6 +70,9 @@ describe('master/detail pages', () => {
       it in a plain block, and neither could be scrolled.
     */
     const direct = globSync('src/**/*.tsx')
+      // globSync yields OS-native separators (backslashes on Windows); compare
+      // on forward slashes so the exclusion and path checks are cross-platform.
+      .map((file) => file.replace(/\\/g, '/'))
       .filter((file) => !file.includes('.test.'))
       .filter((file) => file !== 'src/components/layout/MasterDetailPage.tsx')
       // Imported, not merely named: a comment may say what a page is built on.
