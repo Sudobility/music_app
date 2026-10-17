@@ -1746,6 +1746,11 @@
     "defaultTitleGenerated": "生成的乐谱",
     "lyricsTheme": "歌词的主题",
     "lyricsThemePlaceholder": "例如：一首关于归乡的情歌",
+    "lyricsLanguage": "歌词语言",
+    "lyricsLanguageName": {
+      "en": "英文",
+      "zh": "中文"
+    },
     "generationNeedsSignIn": "登录后即可让 AI 为你生成乐谱。",
     "generationNeedsServer": "生成功能需要服务器上的项目。需要登录。",
     "generationNeedsCredits": "你的积分余额低于零，暂时无法生成。购买积分后即可再次使用。",

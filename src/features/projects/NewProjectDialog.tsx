@@ -98,6 +98,7 @@ import {
   GENERATE_SCORE_KEY_FIFTHS_OPTIONS,
   GENERATE_SCORE_MOOD_OPTIONS,
   GENERATE_SCORE_TIME_SIGNATURE_OPTIONS,
+  LYRICS_LANGUAGE_OPTIONS,
   canRemoveNewProjectEntry,
   complexityLabelKey,
   firstMelodyInstrumentEntryId,
@@ -105,6 +106,7 @@ import {
   instrumentLabelFor,
   isNewProjectEntryLocked,
   labelledOptions,
+  lyricsLanguageLabelKey,
   moodLabelKey,
   newProjectCreditState,
   newProjectDefaultTitleKey,
@@ -345,7 +347,13 @@ export function NewProjectDialog({
     runs the same reducer, which is what stopped the two forms disagreeing about
     what a salsa is. This component only draws the draft and dispatches.
   */
-  const [storedDraft, dispatch] = useReducer(reduceDraft, undefined, initialNewProjectDraft);
+  // Open the lyric language on the reader's working language — a Chinese UI
+  // writes Chinese words by default, where undefined would mean English
+  // regardless; the reader can still change it below.
+  const [storedDraft, dispatch] = useReducer(reduceDraft, undefined, () => ({
+    ...initialNewProjectDraft(),
+    lyricsLanguage: (i18n.language.startsWith('zh') ? 'zh' : 'en') as 'en' | 'zh',
+  }));
   useEffect(() => {
     if (open && storedDraft.variant !== selected) {
       dispatch({ type: 'setVariant', variant: selected });
@@ -717,6 +725,41 @@ export function NewProjectDialog({
                 }
                 className={TEXT_INPUT_CLASS}
               />
+            </label>
+          ) : null}
+
+          {/* The language the words are written in. Undefined on the request is
+              English — the prompt's own default — so the picker shows English
+              until the reader picks otherwise; the draft is seeded from the
+              working language, so a Chinese UI opens on 中文. */}
+          {showLyricsTheme ? (
+            <label className="flex flex-col gap-1">
+              <span className="text-xs text-muted-foreground">
+                {t('newProject.lyricsLanguage')}
+              </span>
+              <Select
+                value={draft.lyricsLanguage ?? 'en'}
+                onValueChange={(v) =>
+                  dispatch({
+                    type: 'setLyricsLanguage',
+                    lyricsLanguage: v as 'en' | 'zh',
+                  })
+                }
+              >
+                <SelectTrigger
+                  aria-label={t('newProject.lyricsLanguage')}
+                  className={SELECT_TRIGGER_CLASS}
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {LYRICS_LANGUAGE_OPTIONS.map((lang) => (
+                    <SelectItem key={lang} value={lang}>
+                      {t(lyricsLanguageLabelKey(lang))}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </label>
           ) : null}
         </CollapsibleReveal>
