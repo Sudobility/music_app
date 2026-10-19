@@ -187,9 +187,8 @@ describe('print-only derivations', () => {
   /**
    * A two-track score where track 0 rests bars 2..30 and track 1 plays
    * throughout — long enough that track 0's part earns a cue from track 1.
-   * Track 1 is renamed to something no other text can be, so finding it in the
-   * drawn output means a cue label and nothing else: print sets
-   * `showTrackInfo: false`, so track names are never otherwise drawn.
+   * Track 1 has a unique name. The full score prints that name once per
+   * system as a staff label; a part prints it only when a cue is present.
    */
   const CUE_SOURCE_NAME = 'Zzcue';
 
@@ -214,7 +213,9 @@ describe('print-only derivations', () => {
     // A conductor is already looking at every part. This is the one place the
     // cue rule differs from the mark rule, so it is worth pinning.
     const { container } = render(<PrintView store={cueableStore()} onBack={() => {}} />);
-    expect(drawnText(container)).not.toContain(CUE_SOURCE_NAME);
+    expect(drawnText(container).filter((text) => text === CUE_SOURCE_NAME)).toHaveLength(
+      printedSystems(container).length,
+    );
   });
 
   it('puts a cue in the part print, which is what makes the test above mean something', async () => {
