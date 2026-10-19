@@ -428,17 +428,18 @@ describe('TransportBar: synth loading', () => {
     expect(screen.queryByRole('button', { name: 'Play' })).toBeNull();
   });
 
-  it('starts the engine the moment it is on screen, and shows the wait', () => {
-    // On a page opened cold nothing had touched the player, so the button sat
-    // enabled over an engine that had not begun to load — and the press that
-    // should have played started the load instead.
+  it('keeps Play available for the gesture that starts a cold web engine', async () => {
     const player = new MockMusicPlayer();
     player.readiness = 'notReady';
     initializeMusicPlayer(player);
     const store = makeStore();
     render(<TransportBar store={store} />);
-    expect(player.prepareCalls).toBe(1);
-    expect(screen.getByRole('button', { name: 'Preparing instruments' })).toBeDisabled();
+    expect(player.prepareCalls).toBe(0);
+    const play = screen.getByRole('button', { name: 'Play' });
+    expect(play).toBeEnabled();
+
+    await userEvent.setup().click(play);
+    expect(playbackController.togglePlay).toHaveBeenCalledTimes(1);
   });
 
   it('goes back to Play once the instruments are ready', () => {

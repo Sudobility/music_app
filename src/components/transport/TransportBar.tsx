@@ -248,13 +248,10 @@ function SynthLoadIndicator({ store }: { store: PlaybackStoreApi }) {
  * actually started. Nothing can play until the font is in, so the control that
  * starts playing says so.
  *
- * **Whether it is preparing is the player's own readiness, read and driven
- * by music_player's `usePlaybackReadiness`** — not the store's `synthLoad`.
- * The store only hears about a load that something started, and on a page
- * opened cold nothing had: the button sat enabled over an engine that had
- * not begun, and the press that should have played started the load
- * instead. The hook starts it the moment this button is on screen, so the
- * spinner is the first thing shown and Play the second, on every path in.
+ * Readiness comes from music_player's `usePlaybackReadiness`. On the web,
+ * audio activation needs a user gesture, so an idle Play button stays enabled
+ * and `togglePlay` starts the load from its click. An active load still shows
+ * the spinner until the engine is ready.
  */
 function PlayPauseButton({
   store,
@@ -269,7 +266,11 @@ function PlayPauseButton({
 }) {
   const { t } = useTranslation();
   const playbackState = store((s) => s.state);
-  const preparing = usePlaybackReadiness(getMusicPlayerIfInitialized()) === 'preparing';
+  const player = getMusicPlayerIfInitialized();
+  const readiness = usePlaybackReadiness(player, { prepare: false });
+  // The installed player package still maps an idle engine to `preparing` even
+  // when this host opts out of preloading. Keep Play available for the gesture.
+  const preparing = readiness === 'preparing' && player?.readiness !== 'notReady';
   const label = preparing
     ? t('transport.preparingUnknown')
     : playbackState === 'playing'
