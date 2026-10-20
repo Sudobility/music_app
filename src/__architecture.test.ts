@@ -89,6 +89,9 @@ const ALLOWED_NON_UI = new Set([
   // Build-time configuration and the language list the picker offers.
   'src/config/constants.ts',
   'src/config/languages.ts',
+  // The SEO head configuration: app name, domain and OG image read from the
+  // Vite build env. Build-time configuration, like the two above.
+  'src/seoHead.ts',
   // Composition facade: combines business, editor, and app services for the UI.
   'src/app-library.ts',
 ]);

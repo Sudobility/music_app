@@ -107,7 +107,7 @@ describe('UserDashboardPage', () => {
     expect(screen.getByRole('heading', { name: 'Account' })).toBeTruthy();
   });
 
-  it('offers coupon management to an administrator, after API keys', () => {
+  it('offers coupon management and flag review to an administrator, after API keys', () => {
     mocks.siteAdmin = true;
     render(<UserDashboardPage />);
     expect(listed()).toEqual([
@@ -116,6 +116,7 @@ describe('UserDashboardPage', () => {
       'Credit history',
       'API keys',
       'Manage coupons',
+      'Review flags',
     ]);
   });
 
@@ -123,7 +124,7 @@ describe('UserDashboardPage', () => {
     mocks.siteAdmin = true;
     mocks.showEntities = true;
     render(<UserDashboardPage />);
-    expect(listed().slice(-4)).toEqual(['Manage coupons', 'Workspaces', 'Members', 'Invitations']);
+    expect(listed().slice(-3)).toEqual(['Workspaces', 'Members', 'Invitations']);
   });
 
   it('shows the page for whichever entry is chosen', async () => {

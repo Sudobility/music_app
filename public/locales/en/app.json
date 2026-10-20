@@ -208,7 +208,9 @@
     "invitationsDesc": "Manage and respond to invitations",
     "workspace": "Workspace",
     "selectWorkspace": "Select workspace",
-    "navigation": "Dashboard navigation"
+    "navigation": "Dashboard navigation",
+    "reviewFlags": "Review flags",
+    "reviewFlagsDesc": "Review reports on shared snapshots"
   },
   "devSettings": {
     "title": "Developer settings",
@@ -1423,7 +1425,8 @@
   "published": {
     "notFound": "Not found",
     "noLongerShared": "This link is no longer shared.",
-    "share": "Share"
+    "share": "Share",
+    "flag": "Flag"
   },
   "replace": {
     "action": "Replace",
@@ -1821,5 +1824,33 @@
     "pictureUnsupported": "That file could not be used as a picture.",
     "saveFailed": "Could not save your profile.",
     "signedInAs": "Signed in as {{email}}"
+  },
+  "flag": {
+    "title": "Report this snapshot",
+    "hint": "Tell us why you're reporting this shared snapshot. A site administrator will review it.",
+    "reasonLabel": "Reason",
+    "detailsLabel": "Details",
+    "detailsPlaceholder": "Describe the problem",
+    "detailsRequired": "Please add some details.",
+    "submit": "Submit report",
+    "submitting": "Submitting…",
+    "thanks": "Thanks — your report has been sent for review.",
+    "failed": "Could not send your report. Please try again.",
+    "reject": "Reject",
+    "confirm": "Confirm",
+    "reviewHint": "Reports awaiting review. Reject to dismiss, or Confirm to remove the snapshot from the community.",
+    "reviewEmpty": "No reports to review.",
+    "reviewFailed": "Could not load reports.",
+    "removedForReason": "Removed from community: {{reason}}",
+    "reason": {
+      "copyright": "Copyright infringement",
+      "offensive": "Offensive material",
+      "other": "Other"
+    },
+    "status": {
+      "submitted": "Submitted",
+      "rejected": "Rejected",
+      "confirmed": "Confirmed"
+    }
   }
 }

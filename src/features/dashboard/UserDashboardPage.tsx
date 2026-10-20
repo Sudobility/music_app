@@ -18,6 +18,7 @@ import {
   UsersIcon,
   EnvelopeIcon,
   TagIcon,
+  FlagIcon,
   KeyIcon,
 } from '@heroicons/react/24/outline';
 import {
@@ -33,6 +34,7 @@ import { useTranslation } from 'react-i18next';
 import { CreditsPage } from '@/features/credits/CreditsPage';
 import { CreditsHistoryPage } from '@/features/credits/CreditsHistoryPage';
 import { CreditCouponManagementPage } from '@/features/credits/CreditCouponsPage';
+import { ReviewFlagsPage } from '@/features/community/ReviewFlagsPage';
 import { EntitiesPage } from '@/features/entities/EntitiesPage';
 import { CONSTANTS } from '@/config/constants';
 import { useAuth } from '@/app/AuthContext';
@@ -50,6 +52,7 @@ const DASHBOARD_SECTIONS = [
   'history',
   'api-keys',
   'manage-coupons',
+  'review-flags',
   'workspaces',
   'members',
   'invitations',
@@ -57,7 +60,7 @@ const DASHBOARD_SECTIONS = [
 type DashboardSection = (typeof DASHBOARD_SECTIONS)[number];
 
 /** What only a site administrator is offered. */
-const ADMIN_ONLY: readonly DashboardSection[] = ['manage-coupons'];
+const ADMIN_ONLY: readonly DashboardSection[] = ['manage-coupons', 'review-flags'];
 /** What is offered only where workspaces are switched on. */
 const WORKSPACE_ONLY: readonly DashboardSection[] = ['workspaces', 'members', 'invitations'];
 
@@ -90,6 +93,11 @@ const SECTION_COPY: Record<
     label: 'dashboard.manageCoupons',
     description: 'dashboard.manageCouponsDesc',
     icon: TagIcon,
+  },
+  'review-flags': {
+    label: 'dashboard.reviewFlags',
+    description: 'dashboard.reviewFlagsDesc',
+    icon: FlagIcon,
   },
   workspaces: {
     label: 'dashboard.workspaces',
@@ -138,6 +146,8 @@ export function UserDashboardPage() {
       <CreditsHistoryPage onPurchaseCredits={() => chooseSection('credits')} />
     ) : section === 'manage-coupons' ? (
       <CreditCouponManagementPage />
+    ) : section === 'review-flags' ? (
+      <ReviewFlagsPage />
     ) : section === 'api-keys' ? (
       <EntityApiKeysPage />
     ) : (

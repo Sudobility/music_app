@@ -55,10 +55,14 @@ import {
   getMusicPositionSource,
   publishedSnapshotUrl,
 } from '@sudobility/music_types';
+import type { FlagReason } from '@sudobility/music_types';
 import { getAppServices } from '@/config/initialize';
 import { ScoreEditorView } from '@/features/score-editor/ScoreEditorView';
 import { TransportBar } from '@/components/transport/TransportBar';
 import { SpatialSection } from '@/features/spatial/SpatialSection';
+import { FlagDialog } from '@/features/community/FlagDialog';
+import { useSignedIn } from '@/app/AuthContext';
+import { useSignIn } from '@/features/auth/SignInModal';
 import { useSetPageConfig } from '@/hooks/usePageConfig';
 import { useSetBreadcrumbs } from '@/hooks/useBreadcrumbs';
 
@@ -68,6 +72,22 @@ export function PublishedView() {
   const [snapshot, setSnapshot] = useState<PublishedSnapshot | null>(null);
   const [failed, setFailed] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
+  const [flagOpen, setFlagOpen] = useState(false);
+  const signedIn = useSignedIn();
+  const { openSignIn } = useSignIn();
+
+  // Flagging requires an account — a report has a reporter. A signed-out reader
+  // is sent through sign-in first, then the dialog opens over the page they
+  // returned to.
+  const onFlag = () => {
+    if (signedIn) setFlagOpen(true);
+    else openSignIn(() => setFlagOpen(true));
+  };
+  const submitFlag = async (reason: FlagReason, details: string): Promise<void> => {
+    const token = await getAppServices().auth.getToken();
+    if (!token) throw new Error('Sign in required.');
+    await getAppServices().musicClient.flagSnapshot(publicId, reason, details, token);
+  };
 
   const store = useMemo(() => {
     const { musicClient, auth, prefsStorage } = getAppServices();
@@ -207,12 +227,19 @@ export function PublishedView() {
         <Button type="button" variant="ghost" onClick={() => setShareOpen((v) => !v)}>
           {t('published.share')}
         </Button>
+        {snapshot && (
+          <Button type="button" variant="ghost" onClick={onFlag}>
+            {t('published.flag')}
+          </Button>
+        )}
         {shareOpen && (
           <code className="rounded bg-muted px-2 py-1 text-xs text-foreground">
             {publishedSnapshotUrl(window.location.origin, lang, publicId)}
           </code>
         )}
       </div>
+
+      <FlagDialog open={flagOpen} onSubmit={submitFlag} onClose={() => setFlagOpen(false)} />
 
       <div className="min-h-0 flex-1">
         {spatialActive ? (

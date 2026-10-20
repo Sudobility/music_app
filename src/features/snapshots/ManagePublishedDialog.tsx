@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { FormModal, Input } from '@sudobility/components';
 import { AS_TYPED_INPUT_CLASS } from '@/components/controls/input-classes';
 import { usePendingAction } from '@/hooks/usePendingAction';
-import type { SnapshotSummary } from '@sudobility/music_types';
+import { flagReasonLabelKey, type SnapshotSummary } from '@sudobility/music_types';
 
 export type ManagePublishedDialogProps = {
   open: boolean;
@@ -94,6 +94,15 @@ export function ManagePublishedDialog({
                 }
                 className={AS_TYPED_INPUT_CLASS}
               />
+              {snapshot.removedFromCommunity && (
+                <span className="text-xs text-destructive">
+                  {t('flag.removedForReason', {
+                    reason: snapshot.removalReason
+                      ? t(flagReasonLabelKey(snapshot.removalReason))
+                      : '',
+                  })}
+                </span>
+              )}
             </label>
           ))
         )}

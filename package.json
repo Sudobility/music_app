@@ -1,6 +1,6 @@
 {
   "name": "scoresmith",
-  "version": "0.2.181",
+  "version": "0.2.182",
   "description": "ScoreSmith - a browser-based AI-assisted sheet-music composition app",
   "private": true,
   "type": "module",
@@ -19,7 +19,13 @@
     "localize": "SCRIPT=$(mktemp) && curl -fsSL https://raw.githubusercontent.com/johnqh/workflows/main/scripts/localize_batch.cjs -o $SCRIPT && WHISPERLY_API_KEY=$(grep -h '^WHISPERLY_API_KEY=' ~/.keys ~/.keys.txt 2>/dev/null | head -1 | cut -d= -f2-) node $SCRIPT ./public/locales https://api.whisperly.dev/api/v1/translate/jie9cytr/moosiac && rm -f $SCRIPT && prettier . --write",
     "localize_local": "SCRIPT=$(mktemp) && curl -fsSL https://raw.githubusercontent.com/johnqh/workflows/main/scripts/localize_batch.cjs -o $SCRIPT && node $SCRIPT ./public/locales http://localhost:8021/api/v1/translate/jie9cytr/moosiac && rm -f $SCRIPT && prettier . --write",
     "localized": "node scripts/localization_verify.cjs",
-    "verify": "bun run typecheck && bun run lint && bun run test:unit && bun run build"
+    "verify": "bun run typecheck && bun run lint && bun run test:unit && bun run build",
+    "process:static": "curl -sL https://raw.githubusercontent.com/johnqh/workflows/main/scripts/process-static-files.ts -o /tmp/process-static-files.ts && bunx tsx /tmp/process-static-files.ts",
+    "seo:fetch": "curl -fsSL https://raw.githubusercontent.com/johnqh/workflows/main/scripts/generate-seo-assets-v2.mjs -o /tmp/generate-seo-assets.mjs",
+    "generate:sitemap": "bun run seo:fetch && node /tmp/generate-seo-assets.mjs public",
+    "prerender": "node scripts/prerender.mjs",
+    "prerender:install": "bunx playwright install --with-deps chromium",
+    "generate": "bun run process:static && bun run generate:sitemap && bun run prerender:install && bun run prerender"
   },
   "dependencies": {
     "@breezystack/lamejs": "^1.2.7",
@@ -44,16 +50,16 @@
     "@sudobility/di_web": "^0.1.251",
     "@sudobility/entity_client": "^0.0.46",
     "@sudobility/entity_pages": "^0.0.173",
-    "@sudobility/music_client": "^0.4.89",
-    "@sudobility/music_codecs": "^0.2.54",
-    "@sudobility/music_drawing": "^0.0.64",
-    "@sudobility/music_editing": "^0.0.48",
-    "@sudobility/music_io": "^0.9.70",
-    "@sudobility/music_lib": "^1.9.75",
-    "@sudobility/music_player": "^0.1.66",
+    "@sudobility/music_client": "^0.4.90",
+    "@sudobility/music_codecs": "^0.2.55",
+    "@sudobility/music_drawing": "^0.0.65",
+    "@sudobility/music_editing": "^0.0.49",
+    "@sudobility/music_io": "^0.9.71",
+    "@sudobility/music_lib": "^1.9.76",
+    "@sudobility/music_player": "^0.1.67",
     "@sudobility/music_spatial": "^0.0.19",
     "@sudobility/music_spatial_core": "^0.0.19",
-    "@sudobility/music_types": "^0.13.51",
+    "@sudobility/music_types": "^0.13.52",
     "@sudobility/seo_lib": "^0.0.39",
     "@sudobility/types": "^1.9.68",
     "@tanstack/react-query": "^5.0.0",
@@ -101,6 +107,8 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.65.0",
     "vite": "^8.1.5",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "playwright": "^1.60.0",
+    "tsx": "^4.21.0"
   }
 }

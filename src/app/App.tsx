@@ -19,6 +19,8 @@ import { AuthProvider } from '@/app/AuthContext';
 import { useDocumentLanguage } from '@/hooks/useDocumentLanguage';
 import { useDocumentFontSize } from '@/hooks/useDocumentFontSize';
 import { BrowserRouter } from 'react-router-dom';
+import { SEOHead, SEOHeadProvider } from '@sudobility/seo_lib';
+import { seoHeadConfig } from '@/seoHead';
 import { bindDevicePrefs, useAppStore } from '@/app-library';
 import { getAppServices } from '@/config/initialize';
 import { CONSTANTS } from '@/config/constants';
@@ -145,7 +147,10 @@ export function App({ store = useAppStore }: AppProps) {
           {/* One route table, in `router.tsx`. Auth is applied per route
               there with `ProtectedRoute`, the way `sudojo_app` does it. */}
           <BrowserRouter>
-            <AppRoutes store={store} />
+            <SEOHeadProvider config={seoHeadConfig}>
+              <SEOHead title={seoHeadConfig.appName} description={seoHeadConfig.appName} />
+              <AppRoutes store={store} />
+            </SEOHeadProvider>
           </BrowserRouter>
         </AuthProvider>
       </QueryClientProvider>
