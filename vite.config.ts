@@ -20,8 +20,8 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       // Stub out @sudobility/building_blocks' optional peer deps we don't
       // install (sudobility landing "stubs system" — see its CLAUDE.md).
-      '@sudobility/subscription-components': stub('subscription-components'),
-      '@sudobility/devops-components': stub('devops-components'),
+      '@sudobility/components/subscription': stub('subscription-components'),
+      '@sudobility/components/devops': stub('devops-components'),
       '@sudobility/subscription_lib': stub('subscription_lib'),
     },
   },

@@ -1,4 +1,4 @@
-// Stub for @sudobility/devops-components - not used by this app
+// Stub for @sudobility/components/devops - not used by this app
 import React from 'react';
 
 export const NetworkProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

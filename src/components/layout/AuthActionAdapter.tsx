@@ -3,7 +3,7 @@
  * expects.
  *
  * Every other app in the family (`sudojo_app`, `shapeshyft_app`) passes
- * `AuthAction` from `@sudobility/auth-components` straight through, which is
+ * `AuthAction` from `@sudobility/components/auth` straight through, which is
  * why their top bars look alike. This app cannot: `AuthAction` reads its user
  * from that package's own `AuthProvider`, which takes a `firebaseConfig` and
  * talks to Firebase directly — and this app deliberately swaps Firebase for an
@@ -22,8 +22,8 @@
  */
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { AuthActionProps, AuthUser as LibAuthUser } from '@sudobility/auth-components';
-import { Avatar } from '@sudobility/auth-components';
+import type { AuthActionProps, AuthUser as LibAuthUser } from '@sudobility/components/auth';
+import { Avatar } from '@sudobility/components/auth';
 import { Button, Dropdown } from '@sudobility/components';
 import { useProfile } from '@sudobility/music_client';
 import { useAuth } from '@/app/AuthContext';
