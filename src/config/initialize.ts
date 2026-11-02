@@ -30,7 +30,7 @@ import { EntityClient } from '@sudobility/entity_client';
 import {
   configureConsumablesWebAdapter,
   createConsumablesWebAdapter,
-} from '@sudobility/consumables_client/adapter/web';
+} from '@sudobility/consumables_pages';
 // The theme is configured by its own module, imported first by `main.tsx`;
 // imported here too so nothing that loads this module can precede it.
 import '@/config/theme';
