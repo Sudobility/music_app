@@ -34,6 +34,10 @@ const ALLOWED_NON_UI = new Set([
   // The composition root: it *constructs* the platform services rather than
   // implementing them, which is exactly music_app's job.
   'src/config/initialize.ts',
+  // Composition only: joins music_player's scheduler to music_synth's web synth
+  // to build the player and the audio-export renderer. Neither library depends
+  // on the other, so the app is the one place that knows both.
+  'src/config/web-player.ts',
   // The design-system theme, configured and its variables injected: part of
   // the composition root, split out so the entry point can load it first.
   'src/config/theme.ts',

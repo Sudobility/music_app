@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import { MEASURED_FROM_SHA256 } from '@sudobility/music_player/rn/expression-table';
+import { MEASURED_FROM_SHA256 } from '@sudobility/music_sample_engine/expression-table';
 
 /**
  * Two sets of audio assets are *derived* from this app's soundfont:

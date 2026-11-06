@@ -89,7 +89,7 @@ import {
   serializeProjectFile,
 } from '@/app-library';
 import type { ExportFormatId, ExportPlan } from '@/app-library';
-import { renderScoreAudio } from '@sudobility/music_player';
+import { renderScoreAudio } from '../../config/web-player';
 import { useProjectSnapshots } from '@sudobility/music_client';
 import { THEME_MODE_OPTIONS, publishedSnapshotUrl } from '@sudobility/music_types';
 import type { GenerationJobKind } from '@sudobility/music_types';

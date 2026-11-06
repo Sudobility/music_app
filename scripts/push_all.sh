@@ -44,6 +44,8 @@ PROJECTS=(
     "../music_spatial_core:0"
     # The canvas renderer. After music_types (its only peer) and before
     # music_lib, which re-exports it.
+    "../music_synth:0"
+    "../music_synth_rn:0"
     "../music_player:0"
     "../music_drawing:0"
     "../music_codecs:60"
@@ -54,6 +56,7 @@ PROJECTS=(
     # after it resolve it from npm, so the publish has to land first.
     "../music_spatial:0"
     "../music_spatial_rn:0"
+    "../music_sample_engine:0"
     # The editing engine: the editing store and every operation that changes a
     # score. Its only peer is music_types, so it could go almost anywhere up
     # here — it sits directly before music_lib because that is what consumes

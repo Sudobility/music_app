@@ -45,7 +45,8 @@ import {
 } from '@/app-library';
 import { libraryCopy } from '@/i18n/library-copy';
 import { createMusicIo, type MusicIo } from '@sudobility/music_io';
-import { createMusicPlayer, initializeMusicPlayer } from '@sudobility/music_player';
+import { initializeMusicPlayer } from '@sudobility/music_player';
+import { createWebMusicPlayer } from './web-player';
 import { CONSTANTS } from '@/config/constants';
 
 // ---------------------------------------------------------------------------
@@ -382,7 +383,7 @@ export function initializeApp(): AppServices {
   // Served from public/audio rather than resolved from node_modules: the
   // worklet modules must be reachable as URLs, because addModule takes one,
   // and the soundfont is a 23MB asset the bundler should not touch.
-  initializeMusicPlayer(createMusicPlayer({ soundfont: SOUNDFONT_ASSETS }));
+  initializeMusicPlayer(createWebMusicPlayer({ soundfont: SOUNDFONT_ASSETS }));
 
   const io = createMusicIo();
 
