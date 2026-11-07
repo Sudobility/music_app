@@ -15,7 +15,7 @@ import {
   twoTrackScore,
 } from '@/app-library';
 import type { EditorStoreApi } from '@/app-library';
-import { VisibleTracksField } from './VisibleTracksField';
+import { VisibleTracksField } from '@sudobility/music_ui';
 
 function makeStore(score = twoTrackScore()): EditorStoreApi {
   const store = createAppStore({ context: testStoreContext() });

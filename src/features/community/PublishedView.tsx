@@ -58,8 +58,8 @@ import {
 import type { FlagReason } from '@sudobility/music_types';
 import { getAppServices } from '@/config/initialize';
 import { ScoreEditorView } from '@/features/score-editor/ScoreEditorView';
-import { TransportBar } from '@/components/transport/TransportBar';
-import { SpatialSection } from '@/features/spatial/SpatialSection';
+import { TransportBar } from '@sudobility/music_ui';
+import { SpatialSection } from '@sudobility/music_ui';
 import { FlagDialog } from '@/features/community/FlagDialog';
 import { useSignedIn } from '@/app/AuthContext';
 import { useSignIn } from '@/features/auth/SignInModal';

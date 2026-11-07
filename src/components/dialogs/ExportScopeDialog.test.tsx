@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ExportScopeDialog } from '@/components/dialogs/ExportScopeDialog';
+import { ExportScopeDialog } from '@sudobility/music_ui';
 
 describe('ExportScopeDialog', () => {
   it('says how many tracks are hidden', () => {

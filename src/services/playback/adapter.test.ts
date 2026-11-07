@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { getMusicPosition } from '@sudobility/music_types';
 import { MockMusicPlayer } from '@sudobility/music_player/mocks';
 import { testStoreContext } from '../../test/store-context.js';
-import { createAppStore } from '../../store/useAppStore.js';
+import { createAppStore } from '@sudobility/music_lib';
 import { twinkleScore } from '@sudobility/music_lib';
 import { createPlaybackAdapter } from './adapter.js';
 import { setLibraryMessages } from '@sudobility/music_lib';

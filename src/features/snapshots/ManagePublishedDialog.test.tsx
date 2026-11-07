@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { SnapshotSummary } from '@sudobility/music_types';
-import { ManagePublishedDialog } from '@/features/snapshots/ManagePublishedDialog';
+import { ManagePublishedDialog } from '@sudobility/music_ui';
 
 const summary = (over: Partial<SnapshotSummary>): SnapshotSummary => ({
   id: 'a',

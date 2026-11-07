@@ -14,6 +14,9 @@ import { initializeApp } from '@/config/initialize';
 import { CONSTANTS } from '@/config/constants';
 import '@/i18n';
 import '@/index.css';
+// The shared UI library's stylesheet (vite extracts it from the lib bundle);
+// currently the print view's @media print rules.
+import '@sudobility/music_ui/style.css';
 
 initializeApp();
 document.title = CONSTANTS.APP_NAME;

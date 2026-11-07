@@ -16,7 +16,7 @@ import {
 import type { EditorStoreApi } from '@/app-library';
 import { installTestAppServices, resetTestAppServices } from '@/test/app-services';
 import { printRenderOptions } from '@sudobility/music_drawing';
-import { PrintView } from '@/features/print/PrintView';
+import { PrintView } from '@sudobility/music_ui';
 
 function makeStore(): EditorStoreApi {
   const store = createAppStore({ context: testStoreContext() });

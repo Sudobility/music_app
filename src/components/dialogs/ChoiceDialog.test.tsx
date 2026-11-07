@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ChoiceDialog } from '@/components/dialogs/ChoiceDialog';
+import { ChoiceDialog } from '@sudobility/music_ui';
 
 const CHOICES = [
   { value: 'a' as const, label: 'Do A', detail: 'the first way', primary: true },

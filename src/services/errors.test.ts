@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { AppError, reportError, setErrorLogging } from './errors.js';
-import { createAppStore } from '../store/useAppStore.js';
+import { createAppStore } from '@sudobility/music_lib';
 import { testStoreContext } from '../test/store-context.js';
 
 const freshStore = () => createAppStore({ context: testStoreContext() });

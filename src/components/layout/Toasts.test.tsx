@@ -3,7 +3,7 @@ import { testStoreContext } from '@/app-library';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createAppStore } from '@/app-library';
-import { Toasts } from '@/components/layout/Toasts';
+import { Toasts } from '@sudobility/music_ui';
 import type { EditorStoreApi } from '@/app-library';
 
 function makeStore(): EditorStoreApi {

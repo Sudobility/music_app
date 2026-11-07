@@ -15,7 +15,7 @@ import { flagReasonLabelKey, type SnapshotFlag } from '@sudobility/music_types';
 import { useReviewFlags } from '@sudobility/music_client';
 import { useAuth } from '@/app/AuthContext';
 import { LocalizedLink } from '@/components/layout/LocalizedLink';
-import { usePendingAction } from '@/hooks/usePendingAction';
+import { usePendingAction } from '@sudobility/music_ui';
 
 export function ReviewFlagsPage() {
   const { t } = useTranslation();

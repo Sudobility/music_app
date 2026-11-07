@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { isLongAudio } from '@sudobility/music_io';
 import { AUDIO_IMPORT_EXTENSIONS, AUDIO_MIME } from '@sudobility/music_types';
-import { FileImportModal } from '@/components/dialogs/FileImportModal';
+import { FileImportModal } from '@sudobility/music_ui';
 
 export type AudioImportDialogProps = {
   open: boolean;

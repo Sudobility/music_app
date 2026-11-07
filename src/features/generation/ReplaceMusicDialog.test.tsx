@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import type { ReplacementRegion } from '@/app-library';
 import { initializeAppStore } from '@/app-library';
 import { testStoreContext } from '@/test/store-context';
-import { ReplaceMusicDialog } from '@/features/generation/ReplaceMusicDialog';
+import { ReplaceMusicDialog } from '@sudobility/music_ui';
 
 beforeEach(() => {
   initializeAppStore(testStoreContext());

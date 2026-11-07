@@ -40,7 +40,10 @@ vi.mock('@/app-library', async (importOriginal) => {
   };
 });
 
-vi.mock('@/features/generation/useGenerationJob', async (importOriginal) => ({
+// The library's AppLayout wraps `@sudobility/music_client`'s
+// `useProjectGeneration` (via its own thin hook, bundled into the lib); mocking
+// the music_client boundary controls the generation state for both.
+vi.mock('@sudobility/music_client', async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useProjectGeneration: vi.fn(),
 }));
@@ -56,7 +59,7 @@ vi.mock('@sudobility/music_spatial', () => ({
 }));
 
 import { AppLayout } from '@/components/layout/AppLayout';
-import { useProjectGeneration } from '@/features/generation/useGenerationJob';
+import { useProjectGeneration } from '@sudobility/music_client';
 import type { EditorStoreApi } from '@/app-library';
 import { installTestAppServices, resetTestAppServices } from '@/test/app-services';
 import { getAppServices, setAppServices } from '@/config/initialize';

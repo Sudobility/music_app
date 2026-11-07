@@ -12,7 +12,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ScoreContextMenu } from '@/features/score-editor/ScoreContextMenu';
+import { ScoreContextMenu } from '@sudobility/music_ui';
 import { scoreContextMenuModel } from '@/app-library';
 import type { ClipboardData } from '@/app-library';
 import type { ScoreSelection } from '@sudobility/music_types';

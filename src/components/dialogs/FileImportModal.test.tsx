@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FileImportModal } from '@/components/dialogs/FileImportModal';
+import { FileImportModal } from '@sudobility/music_ui';
 
 function renderModal(overrides: Partial<React.ComponentProps<typeof FileImportModal>> = {}) {
   const props = {

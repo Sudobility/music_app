@@ -6,13 +6,40 @@ import { createAppStore } from '@/app-library';
 import { chordScore, twinkleScore } from '@/app-library';
 import { exportMidi } from '@/app-library';
 import { analyzeMidi } from '@/app-library';
-import { MidiImportWizard } from '@/components/dialogs/MidiImportWizard';
-import { Toasts } from '@/components/layout/Toasts';
+import { MidiImportWizard as LibMidiImportWizard } from '@sudobility/music_ui';
+import type { ComponentProps } from 'react';
+import { Toasts } from '@sudobility/music_ui';
 import type { EditorStoreApi, MidiImportOptions, MidiImportResult } from '@/app-library';
+import { reportError } from '@/app-library';
+import { getAppServices } from '@/config/initialize';
 import { installTestAppServices, resetTestAppServices } from '@/test/app-services';
 
 function makeStore(): EditorStoreApi {
   return createAppStore({ context: testStoreContext() });
+}
+
+// The library dialog takes its MIDI service and error reporter injected (what
+// the app's wrapper supplies in production). This stand-in defaults them to the
+// installed platform io + `reportError`, while a test still overrides
+// `midiService` with a fake via the spread.
+const platformMidiService = {
+  analyze: (buffer: ArrayBuffer) => Promise.resolve(getAppServices().io.analyzeMidi(buffer)),
+  import: (buffer: ArrayBuffer, options: MidiImportOptions) =>
+    Promise.resolve(getAppServices().io.openMidi(buffer, options)),
+};
+
+function MidiImportWizard(
+  props: Omit<ComponentProps<typeof LibMidiImportWizard>, 'midiService' | 'onError'> & {
+    midiService?: ComponentProps<typeof LibMidiImportWizard>['midiService'];
+  },
+) {
+  return (
+    <LibMidiImportWizard
+      midiService={platformMidiService}
+      onError={(err, context) => reportError(err, { context, store: props.store })}
+      {...props}
+    />
+  );
 }
 
 // The dialog resolves its import service from the composition root, so the

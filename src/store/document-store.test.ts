@@ -6,7 +6,7 @@
  * shared, and only where the bytes go differs.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { bindPlayer } from '../services/playback/bind-player.js';
+import { bindPlayer } from '@sudobility/music_lib';
 import { parseProjectFile } from '@sudobility/music_codecs';
 import {
   addMeasureCommand,
@@ -21,7 +21,7 @@ import {
   createDocumentStore,
   openFileDocument,
   openProjectDocument,
-} from './document-store.js';
+} from '@sudobility/music_lib';
 import type { DocumentFileStorage, Toast } from '@sudobility/music_types';
 
 const DEBOUNCE_MS = 2000;

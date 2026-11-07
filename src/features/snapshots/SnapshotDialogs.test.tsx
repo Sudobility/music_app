@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CreateSnapshotDialog, OpenSnapshotDialog } from '@/features/snapshots/SnapshotDialogs';
+import { CreateSnapshotDialog, OpenSnapshotDialog } from '@sudobility/music_ui';
 import { snapshotTree } from '@/app-library';
 
 describe('CreateSnapshotDialog', () => {

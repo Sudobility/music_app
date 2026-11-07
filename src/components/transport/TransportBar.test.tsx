@@ -35,7 +35,16 @@ vi.mock('@/app-library', async (importOriginal) => {
 });
 
 import { PlaybackBus, playbackController } from '@/app-library';
-import { TransportBar } from '@/components/transport/TransportBar';
+import { TransportBar as TransportBarImpl } from '@sudobility/music_ui';
+import type { TransportBarProps } from '@sudobility/music_ui';
+
+// The library bar requires its controller injected (it no longer defaults to
+// the app-wide singleton). These tests drive the mocked `playbackController`,
+// so default to it here; a test that injects its own still overrides via the
+// spread.
+function TransportBar(props: Omit<TransportBarProps, 'controller'> & { controller?: TransportBarProps['controller'] }) {
+  return <TransportBarImpl controller={playbackController} {...props} />;
+}
 
 function makeStore(withScore = true): PlaybackStoreApi {
   const store = createAppStore({ context: testStoreContext() });

@@ -77,13 +77,13 @@ import { useMusicHookContext } from '@/app/AuthContext';
 import { NewProjectDialog } from '@/features/projects/NewProjectDialog';
 import { TemplatePickerDialog } from '@/features/projects/TemplatePickerDialog';
 import type { NewProjectSubmission } from '@/app-library';
-import { ConfirmDialog } from '@/components/dialogs/ConfirmDialog';
+import { ConfirmDialog } from '@sudobility/music_ui';
 import { MidiImportWizard } from '@/components/dialogs/MidiImportWizard';
 import { MusicXmlImportDialog } from '@/components/dialogs/MusicXmlImportDialog';
 import { AudioImportDialog } from '@/components/dialogs/AudioImportDialog';
-import { FileImportModal } from '@/components/dialogs/FileImportModal';
-import { PendingButton } from '@/components/controls/PendingButton';
-import { usePendingAction, usePendingKeys } from '@/hooks/usePendingAction';
+import { FileImportModal } from '@sudobility/music_ui';
+import { PendingButton } from '@sudobility/music_ui';
+import { usePendingAction, usePendingKeys } from '@sudobility/music_ui';
 
 export type DashboardPageProps = {
   /** Defaults to the app-wide singleton (`useAppStore`); tests inject an isolated store via `createAppStore({ context })`. */

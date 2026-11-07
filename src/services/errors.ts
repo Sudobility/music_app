@@ -16,8 +16,8 @@
  */
 import type { AppErrorCode, AppErrorOptions } from '@sudobility/music_types';
 import { libraryMessage } from '@sudobility/music_lib';
-import { useAppStore } from '../store/useAppStore.js';
-import type { createAppStore } from '../store/useAppStore.js';
+import { useAppStore } from '@sudobility/music_lib';
+import type { createAppStore } from '@sudobility/music_lib';
 
 /** A taxonomized application error (spec §28). Thrown by call sites that already know *why* an operation failed and want the UI to show something clearer than a raw `Error.message`. */
 export class AppError extends Error {

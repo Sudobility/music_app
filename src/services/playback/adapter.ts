@@ -25,11 +25,11 @@ import type { SoundingNote, TransportPlaybackState } from '@sudobility/music_typ
 import type { IMusicPlayer } from '@sudobility/music_player/core';
 import { getMusicPlayer } from '@sudobility/music_player/core';
 import type { PlayerFailure } from '@sudobility/music_types';
-import { bindPlayer } from './bind-player.js';
-import type { BindPlayerOptions, PlayerBinding } from './bind-player.js';
+import { bindPlayer } from '@sudobility/music_lib';
+import type { BindPlayerOptions, PlayerBinding } from '@sudobility/music_lib';
 import { libraryMessage } from '@sudobility/music_lib';
-import { useAppStore } from '../../store/useAppStore.js';
-import type { createAppStore } from '../../store/useAppStore.js';
+import { useAppStore } from '@sudobility/music_lib';
+import type { createAppStore } from '@sudobility/music_lib';
 
 /** The store shape this module operates on: the same type `useAppStore`/`createAppStore()` produce. */
 export type PlaybackStoreApi = ReturnType<typeof createAppStore>;

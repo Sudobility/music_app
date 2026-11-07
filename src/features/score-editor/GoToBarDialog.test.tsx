@@ -10,7 +10,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { GoToBarDialog } from '@/features/score-editor/GoToBarDialog';
+import { GoToBarDialog } from '@sudobility/music_ui';
 
 function open(onGo: (text: string) => boolean) {
   const onClose = vi.fn();

@@ -16,7 +16,7 @@ import type {
 import type { IMusicPlayer } from '@sudobility/music_player/core';
 import { createEditingStore } from '@sudobility/music_editing';
 import type { EditingState, EditingStoreApi } from '@sudobility/music_editing';
-import { bindPlayer } from './bind-player.js';
+import { bindPlayer } from '@sudobility/music_lib';
 
 /** A bare editing store, built the way a document is — no context, no server. */
 function testEditingStore(score?: Score) {

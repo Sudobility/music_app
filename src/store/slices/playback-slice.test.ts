@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { testStoreContext } from '../../test/store-context.js';
-import { createAppStore } from '../useAppStore.js';
+import { createAppStore } from '@sudobility/music_lib';
 
 describe('playback-slice', () => {
   it('starts stopped, with no active notes/loop, unit tempo, metronome off, full volume', () => {

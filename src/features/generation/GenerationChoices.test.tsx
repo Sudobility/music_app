@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import type { GenerationRecord } from '@sudobility/music_types';
 import { regenerateWithLocks } from '@/app-library';
-import { GenerationChoices } from './GenerationChoices';
+import { GenerationChoices } from '@sudobility/music_ui';
 
 afterEach(cleanup);
 

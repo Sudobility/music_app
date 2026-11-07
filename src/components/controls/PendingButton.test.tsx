@@ -5,8 +5,8 @@
  */
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { PendingButton } from '@/components/controls/PendingButton';
-import { usePendingAction } from '@/hooks/usePendingAction';
+import { PendingButton } from '@sudobility/music_ui';
+import { usePendingAction } from '@sudobility/music_ui';
 
 afterEach(cleanup);
 

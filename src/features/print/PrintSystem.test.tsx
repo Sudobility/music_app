@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { computeLayout, twinkleScore } from '@/app-library';
 import { LIGHT_RENDER_THEME } from '@sudobility/music_drawing';
 import { PRINT_SCALE, PRINT_WIDTH, printSystems } from '@sudobility/music_drawing';
-import { PrintSystem } from '@/features/print/PrintSystem';
+import { PrintSystem } from '@sudobility/music_ui';
 
 function firstSlice() {
   const score = twinkleScore();

@@ -6,7 +6,7 @@ import { createAppStore } from '@/app-library';
 import { twinkleScore } from '@/app-library';
 import { exportMusicXml } from '@/app-library';
 import { MusicXmlImportDialog } from '@/components/dialogs/MusicXmlImportDialog';
-import { Toasts } from '@/components/layout/Toasts';
+import { Toasts } from '@sudobility/music_ui';
 import type { EditorStoreApi } from '@/app-library';
 import { installTestAppServices, resetTestAppServices } from '@/test/app-services';
 

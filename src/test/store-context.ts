@@ -27,7 +27,7 @@ import {
   type Score,
 } from '@sudobility/music_types';
 import { createEmptyScore } from '@sudobility/music_types';
-import type { StoreContext } from '../store/context.js';
+import type { StoreContext } from '@sudobility/music_lib';
 import type { PrefsStorage } from '@sudobility/music_types';
 
 /**

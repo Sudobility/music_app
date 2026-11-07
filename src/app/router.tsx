@@ -38,7 +38,7 @@ import HomePage from '@/pages/HomePage';
 import ResourcesPage from '@/pages/ResourcesPage';
 import LoginPage from '@/pages/LoginPage';
 import SettingsPage from '@/pages/SettingsPage';
-import { PrintView } from '@/features/print/PrintView';
+import { PrintView } from '@sudobility/music_ui';
 import { useCurrentLanguage, useLocalizedNavigate } from '@/hooks/useLocalizedNavigate';
 import { isLanguageSupported } from '@/i18n';
 import { SUPPORTED_LANGUAGES } from '@/config/languages';

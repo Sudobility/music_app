@@ -12,7 +12,7 @@ import userEvent from '@testing-library/user-event';
 import { GM_FAMILIES, GM_KITS, GM_FAMILY_LABELS, gmInstrumentsByFamily } from '@/app-library';
 import { getAppStore, initializeAppStore } from '@/app-library';
 import { testStoreContext } from '@/test/store-context';
-import { GenerateTrackDialog } from '@/components/dialogs/GenerateTrackDialog';
+import { GenerateTrackDialog } from '@sudobility/music_ui';
 import { instrumentChoiceFor } from '@/app-library';
 
 describe('instrumentChoiceFor', () => {

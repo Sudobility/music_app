@@ -64,15 +64,6 @@ const ALLOWED_NON_UI = new Set([
   // replays what music_drawing's `ScoreCanvas` hands it — and it is the part
   // that cannot live in a platform-free package, because it touches the DOM.
   'src/features/score-editor/web-canvas-surface.ts',
-  // The inspector's shared vocabulary: the MIXED sentinel and the class names
-  // that keep a column of controls the same height. Presentation, not logic.
-  'src/components/inspector/shared.ts',
-  // The app bar's menu hook and button classes — a React hook and class
-  // strings, so UI by definition.
-  'src/components/layout/app-bar-menu.ts',
-  // One class string: the casing of a field whose text is kept as typed.
-  // Presentation, and shared so three dialogs cannot state it three ways.
-  'src/components/controls/input-classes.ts',
   // Which documentation topics have a figure, and where it is served from.
   // This app's own pictures of this app's own screens.
   'src/features/docs/figures.ts',

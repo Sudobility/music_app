@@ -7,6 +7,7 @@ export default {
     './index.html',
     './src/**/*.{js,ts,jsx,tsx}',
     './node_modules/@sudobility/components/**/*.{js,jsx,ts,tsx}',
+    './node_modules/@sudobility/music_ui/{src,dist}/**/*.{js,jsx,ts,tsx}',
     './node_modules/@sudobility/building_blocks/**/*.{js,jsx,ts,tsx}',
     './node_modules/@sudobility/design/**/*.{js,jsx,ts,tsx}',
     './node_modules/@sudobility/auth-components/**/*.{js,jsx,ts,tsx}',

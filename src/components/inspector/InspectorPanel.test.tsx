@@ -20,7 +20,7 @@ import {
 import type { NoteEvent } from '@sudobility/music_types';
 import { MAX_BPM } from '@sudobility/music_types';
 import { dragSlider } from '@/test/drag-slider';
-import { InspectorPanel } from '@/components/inspector/InspectorPanel';
+import { InspectorPanel } from '@sudobility/music_ui';
 import type { EditorStoreApi } from '@/app-library';
 
 function makeStore(score: ReturnType<typeof twinkleScore> = twinkleScore()): EditorStoreApi {

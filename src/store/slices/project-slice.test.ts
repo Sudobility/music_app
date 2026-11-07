@@ -10,8 +10,8 @@ import { testStoreContext } from '../../test/store-context.js';
 import { changeTrackPropsCommand } from '@sudobility/music_types';
 import type { GenerationRecord, Score } from '@sudobility/music_types';
 import { threeTrackScore } from '@sudobility/music_lib';
-import { createAppStore } from '../useAppStore.js';
-import { loadProjectLocalUi } from '../../services/persistence/project-ui.js';
+import { createAppStore } from '@sudobility/music_lib';
+import { loadProjectLocalUi } from '@sudobility/music_lib';
 
 const AUTOSAVE_MS = 2000;
 

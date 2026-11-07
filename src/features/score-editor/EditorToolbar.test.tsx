@@ -9,7 +9,7 @@ import { allNotes, findEvent } from '@/app-library';
 import { addMeasureCommand, deleteMeasureCommand } from '@/app-library';
 import type { NoteEvent } from '@sudobility/music_types';
 import { getMusicPosition } from '@sudobility/music_types';
-import { EditorToolbar } from '@/features/score-editor/EditorToolbar';
+import { EditorToolbar } from '@sudobility/music_ui';
 import type { EditorStoreApi } from '@/app-library';
 
 function makeStore(withScore = true): EditorStoreApi {

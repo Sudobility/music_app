@@ -8,9 +8,9 @@ import { twinkleScore } from '@/app-library';
 import { pitchToMidi, allNotes, findEvent } from '@/app-library';
 import type { NoteEvent } from '@sudobility/music_types';
 import { isNoteEvent } from '@sudobility/music_types';
-import { useEditorShortcuts } from '@/features/score-editor/useEditorShortcuts';
+import { useEditorShortcuts } from '@sudobility/music_ui';
 import type { EditorStoreApi } from '@/app-library';
-import type { PlaybackToggle } from '@/features/score-editor/useEditorShortcuts';
+import type { PlaybackToggle } from '@sudobility/music_ui';
 
 // useEditorShortcuts defaults its `controller` param to the app-wide
 // `playbackController` singleton, which eagerly constructs a real Tone.js
@@ -39,7 +39,13 @@ function makeStore(): EditorStoreApi {
 
 afterEach(async () => {});
 
-function Harness({ store, controller }: { store: EditorStoreApi; controller?: PlaybackToggle }) {
+function Harness({
+  store,
+  controller = { togglePlay: () => {} },
+}: {
+  store: EditorStoreApi;
+  controller?: PlaybackToggle;
+}) {
   useEditorShortcuts(store, controller);
   return (
     <div>

@@ -7,8 +7,8 @@ import {
   type CreatedEntityApiKey,
 } from '@sudobility/entity_client';
 import { Button, Input } from '@sudobility/components';
-import { PendingButton } from '@/components/controls/PendingButton';
-import { AS_TYPED_INPUT_CLASS } from '@/components/controls/input-classes';
+import { PendingButton } from '@sudobility/music_ui';
+import { AS_TYPED_INPUT_CLASS } from '@sudobility/music_ui';
 import { getAppServices } from '@/config/initialize';
 import { CONSTANTS } from '@/config/constants';
 

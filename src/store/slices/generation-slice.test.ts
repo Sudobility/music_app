@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from 'vitest';
-import { createAppStore } from '../useAppStore.js';
+import { createAppStore } from '@sudobility/music_lib';
 import { testStoreContext, FakeGenerationProvider } from '../../test/store-context.js';
 
 // Late-binding provider shim replacing the deleted process-wide registry:

@@ -10,7 +10,7 @@
  * still sees exactly what the store sees.
  */
 import { describe, expect, it, beforeEach } from 'vitest';
-import { createAppStore } from '../../store/useAppStore.js';
+import { createAppStore } from '@sudobility/music_lib';
 import { testStoreContext } from '../../test/store-context.js';
 import { getMusicSelection, resetMusicSelection } from '@sudobility/music_editing';
 

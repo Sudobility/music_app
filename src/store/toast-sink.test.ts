@@ -5,7 +5,7 @@
  * or a refused note lands in `state.toasts` and nobody ever sees it.
  */
 import { describe, expect, it, vi } from 'vitest';
-import { createAppStore } from './useAppStore.js';
+import { createAppStore } from '@sudobility/music_lib';
 import { testStoreContext } from '../test/store-context.js';
 import type { Toast } from '@sudobility/music_types';
 

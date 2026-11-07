@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from '@sudobility/components';
 import { FLAG_REASONS, flagReasonLabelKey, type FlagReason } from '@sudobility/music_types';
-import { usePendingAction } from '@/hooks/usePendingAction';
+import { usePendingAction } from '@sudobility/music_ui';
 
 export type FlagDialogProps = {
   open: boolean;

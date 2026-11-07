@@ -36,10 +36,6 @@ import { generateThemeCSS, swissTheme } from '@sudobility/design/themes';
  * else is a colour somebody reached for because it was to hand.
  */
 const ALLOWED_PALETTE: Readonly<Record<string, { classes: readonly string[]; why: string }>> = {
-  'src/features/print/PrintView.tsx': {
-    classes: ['bg-white', 'text-black', 'text-neutral-600'],
-    why: 'Paper. The page under the control bar prints black on white in either theme.',
-  },
   'src/pages/ResourcesPage.tsx': {
     classes: ['bg-white', 'ring-black/10', 'text-neutral-500'],
     why: "Other sites' logos sit on one light chip in both themes; many are solid black on transparent and vanish on a dark surface.",
@@ -110,10 +106,6 @@ function flatten(colours: Colours, prefix = ''): Array<[string, string]> {
 const ALLOWED_COLOUR_LITERALS: Readonly<
   Record<string, { literals: readonly string[]; why: string }>
 > = {
-  'src/features/piano-keyboard/PianoKeyboardView.tsx': {
-    literals: ['rgba(0,0,0,0.45)'],
-    why: "The keys are a piano's: white and black in both themes (music_drawing's KEYBOARD_WHITE/BLACK), and the shadow between them is part of that drawing, not of the surface around it.",
-  },
   'src/services/perf/benchmark.ts': {
     literals: [
       '#111111',
@@ -136,18 +128,6 @@ const COLOUR_LITERAL = /#[0-9a-fA-F]{3,8}(?![\w-])|\b(?:rgba?|hsla?)\(\s*[\d.][^
  * owed no foreground. By file, each with why.
  */
 const ALLOWED_UNPAIRED: Readonly<Record<string, { classes: readonly string[]; why: string }>> = {
-  'src/features/tracks/mixer-controls.tsx': {
-    classes: ['bg-primary'],
-    why: 'The pan fill: a bar inside the slider groove with no text in it.',
-  },
-  'src/components/controls/level-slider.tsx': {
-    classes: ['bg-primary'],
-    why: 'The level fill: a bar inside the slider groove with no text in it.',
-  },
-  'src/components/dialogs/FileImportModal.tsx': {
-    classes: ['bg-primary'],
-    why: 'The progress bar fill, which holds no text.',
-  },
 };
 
 /** Backgrounds with a declared foreground: the ink that is legible on them. */

@@ -8,8 +8,8 @@
  * the genuinely server-backed features report themselves unavailable.
  */
 import { describe, expect, it } from 'vitest';
-import { createAppStore } from './useAppStore.js';
-import { hasServer, ServerUnavailableError } from './context.js';
+import { createAppStore } from '@sudobility/music_lib';
+import { hasServer, ServerUnavailableError } from '@sudobility/music_lib';
 import { localStoreContext, testStoreContext } from '../test/store-context.js';
 import { twinkleScore } from '@sudobility/music_lib';
 import { changeMetadataCommand } from '@sudobility/music_types';

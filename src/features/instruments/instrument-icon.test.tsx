@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { render } from '@testing-library/react';
 import { GM_INSTRUMENTS, gmInstrumentIcon, gmKitIcon } from '@/app-library';
-import { InstrumentIcon } from '@/features/instruments/instrument-icon';
+import { InstrumentIcon } from '@sudobility/music_ui';
 
 /** Only the two fields the art depends on. */
 const violin = { clef: 'treble' as const, midiProgram: 40 };

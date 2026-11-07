@@ -1,9 +1,14 @@
 import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import type { GenerationJobDetail } from '@sudobility/music_types';
-import { GeneratedOriginDetails, ProjectOriginPanel } from './ProjectOriginPanel';
+import type { MusicHookContext } from '@sudobility/music_client';
+import { GeneratedOriginDetails, ProjectOriginPanel } from '@sudobility/music_ui';
 
 afterEach(cleanup);
+
+// These cases render only the imported/blank/transcribed/null branches, which
+// never touch the server; a stub context satisfies the injected prop.
+const hookContext = {} as MusicHookContext;
 
 describe('ProjectOriginPanel', () => {
   it('names an import by its format and file', () => {
@@ -11,6 +16,7 @@ describe('ProjectOriginPanel', () => {
       <ProjectOriginPanel
         origin={{ kind: 'imported', format: 'midi', fileName: 'tune.mid' }}
         projectId="p1"
+        hookContext={hookContext}
       />,
     );
     expect(screen.getByText('Imported from a file')).toBeTruthy();
@@ -19,10 +25,12 @@ describe('ProjectOriginPanel', () => {
   });
 
   it('says a blank project started from nothing, and an unrecorded one that it is unknown', () => {
-    const { unmount } = render(<ProjectOriginPanel origin={{ kind: 'blank' }} projectId="p1" />);
+    const { unmount } = render(
+      <ProjectOriginPanel origin={{ kind: 'blank' }} projectId="p1" hookContext={hookContext} />,
+    );
     expect(screen.getByText('Started from a blank score')).toBeTruthy();
     unmount();
-    render(<ProjectOriginPanel origin={null} projectId="p1" />);
+    render(<ProjectOriginPanel origin={null} projectId="p1" hookContext={hookContext} />);
     expect(screen.getByText('Not recorded')).toBeTruthy();
   });
 
@@ -31,6 +39,7 @@ describe('ProjectOriginPanel', () => {
       <ProjectOriginPanel
         origin={{ kind: 'transcribed', fileName: 'take 3.wav' }}
         projectId="p1"
+        hookContext={hookContext}
       />,
     );
     expect(screen.getByText('Transcribed from a recording')).toBeTruthy();

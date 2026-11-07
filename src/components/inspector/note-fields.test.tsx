@@ -13,7 +13,7 @@ import userEvent from '@testing-library/user-event';
 import { createEmptyScore } from '@sudobility/music_types';
 import { createAppStore, testStoreContext } from '@/app-library';
 import type { EditorStoreApi } from '@/app-library';
-import { BarBeatField } from '@/components/inspector/note-fields';
+import { BarBeatField } from '@sudobility/music_ui';
 
 const score = createEmptyScore({ title: 'Test', measures: 4 });
 

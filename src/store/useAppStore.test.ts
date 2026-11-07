@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { testStoreContext } from '../test/store-context.js';
-import { createAppStore } from './useAppStore.js';
+import { createAppStore } from '@sudobility/music_lib';
 import { changeMetadataCommand } from '@sudobility/music_types';
 import { twinkleScore } from '@sudobility/music_lib';
 import type { GenerateScoreRequest } from '@sudobility/music_types';

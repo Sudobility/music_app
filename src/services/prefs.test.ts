@@ -20,8 +20,8 @@ import {
   savePrefs,
 } from '@sudobility/music_lib';
 import { MemoryPrefsStorage, testStoreContext } from '../test/store-context.js';
-import { createAppStore } from '../store/useAppStore.js';
-import { createDocumentStore } from '../store/document-store.js';
+import { createAppStore } from '@sudobility/music_lib';
+import { createDocumentStore } from '@sudobility/music_lib';
 import { twinkleScore } from '@sudobility/music_lib';
 
 describe('parseDevicePrefs', () => {

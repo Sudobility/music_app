@@ -9,7 +9,7 @@ import {
   twinkleScore,
 } from '@/app-library';
 import type { NoteEvent } from '@sudobility/music_types';
-import { LyricEntryBar } from '@/features/score-editor/LyricEntryBar';
+import { LyricEntryBar } from '@sudobility/music_ui';
 import { syllabicFor } from '@/app-library';
 import type { EditorStoreApi } from '@/app-library';
 

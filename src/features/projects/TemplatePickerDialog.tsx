@@ -19,7 +19,7 @@
  */
 import { useTranslation } from 'react-i18next';
 import { FormModal, Text, cn } from '@sudobility/components';
-import { PendingButton } from '@/components/controls/PendingButton';
+import { PendingButton } from '@sudobility/music_ui';
 import { variants } from '@sudobility/design';
 import { projectTemplates } from '@/app-library';
 import { libraryCopy } from '@/i18n/library-copy';

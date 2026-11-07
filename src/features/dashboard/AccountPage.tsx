@@ -16,7 +16,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Input, Text } from '@sudobility/components';
-import { PendingButton } from '@/components/controls/PendingButton';
+import { PendingButton } from '@sudobility/music_ui';
 import {
   useDeleteAvatar,
   useProfile,

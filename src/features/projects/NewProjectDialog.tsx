@@ -130,8 +130,8 @@ import {
   type EditorStoreApi,
 } from '@/app-library';
 import { useAppStore } from '@/app-library';
-import { InstrumentSelectItems } from '@/features/instruments/InstrumentSelectItems';
-import { StyleSelectItems } from '@/features/generation/StyleSelectItems';
+import { InstrumentSelectItems } from '@sudobility/music_ui';
+import { StyleSelectItems } from '@sudobility/music_ui';
 import { variants } from '@sudobility/design';
 
 export type NewProjectDialogProps = {
