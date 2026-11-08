@@ -27,13 +27,21 @@ type LibProps = ComponentProps<typeof LibScoreEditorView>;
 
 export type ScoreEditorViewProps = Omit<
   LibProps,
-  'createSurface' | 'scheduler' | 'autoscrollDelta' | 'libraryCopy' | 'renderVoiceRecord' | 'controller'
+  | 'createSurface'
+  | 'scheduler'
+  | 'autoscrollDelta'
+  | 'libraryCopy'
+  | 'renderVoiceRecord'
+  | 'controller'
 > & {
   /** Defaults to the app-wide `playbackController`; the published page passes its own binding. */
   controller?: LibProps['controller'];
 };
 
-export function ScoreEditorView({ controller = playbackController, ...props }: ScoreEditorViewProps) {
+export function ScoreEditorView({
+  controller = playbackController,
+  ...props
+}: ScoreEditorViewProps) {
   return (
     <LibScoreEditorView
       {...props}

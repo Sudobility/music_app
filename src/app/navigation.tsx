@@ -52,19 +52,12 @@ export { useNavigator };
  * routes (home, signin, print, 404…) are navigated by the app's own router,
  * not through this contract.
  */
-export function WebNavigatorProvider({
-  lang,
-  children,
-}: {
-  lang: string;
-  children: ReactNode;
-}) {
+export function WebNavigatorProvider({ lang, children }: { lang: string; children: ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
   const nav = useMemo<MusicNavigator>(
     () => ({
-      go: (name, params) =>
-        navigate(`/${lang}${musicRoutes.build(name, params)}`),
+      go: (name, params) => navigate(`/${lang}${musicRoutes.build(name, params)}`),
       replace: (name, params) =>
         navigate(`/${lang}${musicRoutes.build(name, params)}`, {
           replace: true,

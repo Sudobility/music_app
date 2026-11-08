@@ -42,7 +42,9 @@ import type { TransportBarProps } from '@sudobility/music_ui';
 // the app-wide singleton). These tests drive the mocked `playbackController`,
 // so default to it here; a test that injects its own still overrides via the
 // spread.
-function TransportBar(props: Omit<TransportBarProps, 'controller'> & { controller?: TransportBarProps['controller'] }) {
+function TransportBar(
+  props: Omit<TransportBarProps, 'controller'> & { controller?: TransportBarProps['controller'] },
+) {
   return <TransportBarImpl controller={playbackController} {...props} />;
 }
 

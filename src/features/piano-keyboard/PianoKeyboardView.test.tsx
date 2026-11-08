@@ -82,7 +82,9 @@ afterEach(() => {
 
 describe('PianoKeyboardView', () => {
   it('renders all 88 keys for a piano track', () => {
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={makeStore()} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={makeStore()} />,
+    );
     expect(container.querySelectorAll('[data-testid^="piano-key-"]')).toHaveLength(88);
   });
 
@@ -101,7 +103,9 @@ describe('PianoKeyboardView', () => {
     it('narrows to the instrument, so keys that cannot sound are not offered', () => {
       // A piccolo on an 88-key keyboard says nothing about what will sound.
       const store = makeStore();
-      const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+      const { container } = render(
+        <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+      );
       expect(container.querySelectorAll('[data-testid^="piano-key-"]')).toHaveLength(88);
 
       setProgram(store, 72); // Piccolo
@@ -143,7 +147,9 @@ describe('PianoKeyboardView', () => {
         ],
       } as Score;
       const store = makeStore(lowBass);
-      const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+      const { container } = render(
+        <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+      );
 
       const e0 = key(container, 16);
       expect(e0.getAttribute('aria-disabled')).toBe('true');
@@ -166,7 +172,9 @@ describe('PianoKeyboardView', () => {
 
     it('follows an instrument change on the same track', () => {
       const store = makeStore();
-      const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+      const { container } = render(
+        <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+      );
 
       // The PLAYABLE keys: the keyboard also shows the track's own notes,
       // greyed and inert where the instrument cannot reach them.
@@ -191,7 +199,9 @@ describe('PianoKeyboardView', () => {
     */
     it('letters the keys in written pitch when the staff is', () => {
       const store = makeStore();
-      const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+      const { container } = render(
+        <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+      );
       setProgram(store, 56); // Trumpet in B flat: written a tone above sounding
 
       const nameOf = (midi: number) =>
@@ -212,7 +222,9 @@ describe('PianoKeyboardView', () => {
 
     it("leaves a piano's lettering alone in either mode", () => {
       const store = makeStore();
-      const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+      const { container } = render(
+        <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+      );
       setProgram(store, 0);
 
       act(() => {
@@ -227,7 +239,9 @@ describe('PianoKeyboardView', () => {
     it('begins and ends on a white key, which a black one cannot do', () => {
       // A black key at either end has no white neighbour to hang off.
       const store = makeStore();
-      const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+      const { container } = render(
+        <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+      );
       setProgram(store, 65); // Alto Sax — its raw range starts on a black key
 
       const midis = [...container.querySelectorAll('[data-testid^="piano-key-"]')].map((el) =>
@@ -272,7 +286,9 @@ describe('PianoKeyboardView', () => {
       // Reading a kit address as an instrument showed a piano's compass for a
       // kit: keys that could not sound a drum, and drums that could sound
       // (35-81) hanging off the end.
-      const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={makeDrumStore()} />);
+      const { container } = render(
+        <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={makeDrumStore()} />,
+      );
 
       const midis = [...container.querySelectorAll('[data-testid^="piano-key-"]')].map((el) =>
         Number(el.getAttribute('data-testid')!.replace('piano-key-', '')),
@@ -287,7 +303,9 @@ describe('PianoKeyboardView', () => {
       // with the native keyboard, so a key and its part cannot disagree.
       const store = makeDrumStore(45);
       expect(store.getState().score!.tracks[0].midiProgram).toBe(45);
-      const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+      const { container } = render(
+        <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+      );
       noteOnSpy.mockClear();
 
       fireEvent.pointerDown(key(container, 38), { pointerId: 1 });
@@ -296,7 +314,9 @@ describe('PianoKeyboardView', () => {
     });
 
     it('names each key for the drum it strikes', () => {
-      const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={makeDrumStore()} />);
+      const { container } = render(
+        <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={makeDrumStore()} />,
+      );
 
       expect(key(container, 38)).toHaveAttribute('aria-label', 'Acoustic Snare');
       // A black key, and the most-played piece of the kit.
@@ -319,14 +339,18 @@ describe('PianoKeyboardView', () => {
 
   it('renders unlit with no score', () => {
     const store = createAppStore({ context: testStoreContext() });
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
     const lit = container.querySelectorAll('[data-playing="true"]');
     expect(lit).toHaveLength(0);
   });
 
   it('lights the key of a sounding note on the active track', () => {
     const store = makeStore();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
     const note = allNotes(store.getState().score!)[0];
 
     play(store, [asSounding(note)]);
@@ -336,7 +360,9 @@ describe('PianoKeyboardView', () => {
 
   it('marks a lit key pressed, so state is not carried by color alone', () => {
     const store = makeStore();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
     const note = allNotes(store.getState().score!)[0];
 
     play(store, [asSounding(note)]);
@@ -351,7 +377,9 @@ describe('PianoKeyboardView', () => {
     const store = makeStore(twoTrackScore());
     const score = store.getState().score!;
     act(() => store.getState().setActiveTrack(score.tracks[0].id));
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
     const other = allNotes(score).find((n) => n.trackId === score.tracks[1].id)!;
 
     play(store, [asSounding(other)]);
@@ -376,7 +404,9 @@ describe('PianoKeyboardView', () => {
     play(store, [asSounding(mine)]);
     commits.mockClear();
 
-    act(() => getMusicPlayerIfInitialized()!.bus.publishSounding([asSounding(mine), asSounding(other)]));
+    act(() =>
+      getMusicPlayerIfInitialized()!.bus.publishSounding([asSounding(mine), asSounding(other)]),
+    );
 
     expect(commits).not.toHaveBeenCalled();
   });
@@ -385,7 +415,9 @@ describe('PianoKeyboardView', () => {
     // The Tone engine clears active notes on stop() but NOT on pause(), so
     // without the playbackState gate a paused chord would stay lit forever.
     const store = makeStore();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
     const note = allNotes(store.getState().score!)[0];
     play(store, [asSounding(note)]);
     expect(key(container, pitchToMidi(note.pitch)).dataset.playing).toBe('true');
@@ -397,7 +429,9 @@ describe('PianoKeyboardView', () => {
 
   it('shows nothing when stopped', () => {
     const store = makeStore();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
     const note = allNotes(store.getState().score!)[0];
     play(store, [asSounding(note)]);
 
@@ -413,14 +447,18 @@ describe('PianoKeyboardView', () => {
       stay on screen to remain reachable — and a row holding one button was the
       whole reason that header existed.
     */
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={makeStore()} collapsed />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={makeStore()} collapsed />,
+    );
     expect(container.querySelectorAll('[data-testid^="piano-key-"]')).toHaveLength(0);
     expect(container.textContent).toBe('');
   });
 
   it('uses the shared playing color, so notation and keyboard agree', () => {
     const store = makeStore();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
     const note = allNotes(store.getState().score!)[0];
     play(store, [asSounding(note)]);
 
@@ -452,7 +490,9 @@ describe('playing the keyboard writes notes', () => {
 
   it('sounds the key and writes a note of the length it was held', () => {
     const store = makeStore();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
 
     tap(container, 60, 500); // a quarter at 120bpm
 
@@ -463,17 +503,15 @@ describe('playing the keyboard writes notes', () => {
     expect(store.getState().canUndo).toBe(true);
     // The third argument is the active track's percussion flag, so a drum track
     // auditions on the kit rather than a pitched voice.
-    expect(noteOnSpy).toHaveBeenCalledWith(
-      60,
-      expect.any(Number),
-      false,
-    );
+    expect(noteOnSpy).toHaveBeenCalledWith(60, expect.any(Number), false);
     expect(noteOffSpy).toHaveBeenCalledWith(60);
   });
 
   it('writes a shorter note for a shorter tap', () => {
     const store = makeStore();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
 
     tap(container, 60, 500);
     const quarter = allNotes(store.getState().score!).find((n) => n.startTick === 0)!;
@@ -484,7 +522,9 @@ describe('playing the keyboard writes notes', () => {
     // first and this compares two different places in the score.
     resetMusicPosition();
     const store2 = makeStore();
-    const { container: c2 } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store2} />);
+    const { container: c2 } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store2} />,
+    );
     tap(c2, 60, 125); // a sixteenth
     const short = allNotes(store2.getState().score!).find((n) => n.startTick === 0)!.durationTicks;
 
@@ -494,7 +534,9 @@ describe('playing the keyboard writes notes', () => {
   it('advances the caret, so a run of taps lays out a melody', () => {
     // Without this every tap would overwrite the same position.
     const store = makeStore();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
 
     tap(container, 60, 500);
 
@@ -504,7 +546,9 @@ describe('playing the keyboard writes notes', () => {
 
   it('draws a held key pressed, like a sounding one', () => {
     const store = makeStore();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
 
     fireEvent.pointerDown(key(container, 60), { pointerId: 1 });
     expect(key(container, 60)).toHaveAttribute('data-playing', 'true');
@@ -515,7 +559,9 @@ describe('playing the keyboard writes notes', () => {
 
   it('releases a key the pointer leaves, so the note cannot sustain forever', () => {
     const store = makeStore();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
 
     fireEvent.pointerDown(key(container, 60), { pointerId: 1 });
     fireEvent.pointerCancel(key(container, 60), { pointerId: 1 });
@@ -528,7 +574,9 @@ describe('playing the keyboard writes notes', () => {
     noteOnSpy.mockClear();
     const store = makeStore();
     const before = allNotes(store.getState().score!).length;
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
     const board = container.querySelector('[data-testid="piano-keyboard-board"]') as HTMLElement;
     const box = board.parentElement as HTMLElement;
     box.scrollLeft = 300;
@@ -547,7 +595,9 @@ describe('playing the keyboard writes notes', () => {
   });
 
   it('leaves a press on a key to the key', () => {
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={makeStore()} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={makeStore()} />,
+    );
     const board = container.querySelector('[data-testid="piano-keyboard-board"]') as HTMLElement;
     const box = board.parentElement as HTMLElement;
     box.scrollLeft = 300;
@@ -561,7 +611,9 @@ describe('playing the keyboard writes notes', () => {
 
   it('draws a thin indicator instead of a scrollbar when the keys overflow', () => {
     // The fallback panel is 1000 wide; a piano is 2288.
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={makeStore()} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={makeStore()} />,
+    );
     const indicator = container.querySelector(
       '[data-testid="piano-keyboard-scroll-indicator"]',
     ) as HTMLElement;
@@ -571,7 +623,9 @@ describe('playing the keyboard writes notes', () => {
   });
 
   it('draws 44-wide white keys, centred when they fit', () => {
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={makeStore()} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={makeStore()} />,
+    );
     expect(key(container, 60).style.width).toBe('44px');
     const board = container.querySelector('[data-testid="piano-keyboard-board"]') as HTMLElement;
     expect(board.className).toContain('mx-auto');
@@ -607,7 +661,9 @@ describe('playing several keys at once writes a chord', () => {
 
   it('writes one chord at one tick, not an arpeggio', () => {
     const store = emptyPianoStore();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
 
     playChord(container, [60, 64, 67], 500);
 
@@ -621,7 +677,9 @@ describe('playing several keys at once writes a chord', () => {
     // Measuring each key separately is what made this dangerous: same-start
     // notes whose durations differ delete each other instead of stacking.
     const store = emptyPianoStore();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
 
     playChord(container, [60, 64, 67], 500);
 
@@ -635,7 +693,9 @@ describe('playing several keys at once writes a chord', () => {
     // regardless — the caret is the shared position now, so it really moves and
     // the notes really spread out.
     const store = emptyPianoStore();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
 
     let now = 1_000;
     const clock = vi.spyOn(performance, 'now').mockImplementation(() => now);
@@ -653,7 +713,9 @@ describe('playing several keys at once writes a chord', () => {
 
   it('advances the caret once for a chord, however many keys were held', () => {
     const store = emptyPianoStore();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
     playChord(container, [60, 64, 67], 500);
 
     // One position for the whole chord: three notes on one tick, and the caret
@@ -671,7 +733,9 @@ describe('playing several keys at once writes a chord', () => {
       ...score,
       tracks: score.tracks.map((t) => ({ ...t, midiProgram: 56, instrumentName: 'Trumpet' })),
     });
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
 
     playChord(container, [60, 64, 67], 500);
 
@@ -709,7 +773,9 @@ describe('the keyboard edits a selected chord', () => {
 
   it('lights the selected pitches', () => {
     const { store } = storeWithChord();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
     expect(key(container, 60)).toHaveAttribute('data-selected', 'true'); // C4
     expect(key(container, 64)).toHaveAttribute('data-selected', 'true'); // E4
     expect(key(container, 62)).toHaveAttribute('data-selected', 'false'); // D4
@@ -717,7 +783,9 @@ describe('the keyboard edits a selected chord', () => {
 
   it('removes a note when its lit key is pressed', () => {
     const { store } = storeWithChord();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
 
     fireEvent.pointerDown(key(container, 64), { pointerId: 1, shiftKey: true });
     fireEvent.pointerUp(key(container, 64), { pointerId: 1 });
@@ -731,7 +799,9 @@ describe('the keyboard edits a selected chord', () => {
 
   it('adds a note when an unlit key is pressed', () => {
     const { store } = storeWithChord();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
 
     fireEvent.pointerDown(key(container, 62), { pointerId: 1 }); // D4
     fireEvent.pointerUp(key(container, 62), { pointerId: 1, shiftKey: true });
@@ -743,7 +813,9 @@ describe('the keyboard edits a selected chord', () => {
   it('does not advance the caret while editing a selection', () => {
     // The two jobs must not both happen: that would edit the chord AND move on.
     const { store } = storeWithChord();
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
     const seek = seekSpy;
     seek.mockClear();
 
@@ -774,7 +846,9 @@ describe('the keyboard edits a selected chord', () => {
     const all = allNotes(store.getState().score!).map((n) => n.id);
     store.getState().setSelection({ eventIds: all, measureIds: [], trackIds: [] });
 
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
     resetMusicPosition();
 
     fireEvent.pointerDown(key(container, 62), { pointerId: 1 });
@@ -803,7 +877,9 @@ describe('the keyboard edits a selected chord', () => {
     const first = allNotes(store.getState().score!)[0]!;
     store.getState().setSelection({ eventIds: [first.id], measureIds: [], trackIds: [] });
     store.getState().setSnapGrid('sixteenth');
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
 
     fireEvent.pointerDown(key(container, 62), { pointerId: 1, shiftKey: true });
     fireEvent.pointerUp(key(container, 62), { pointerId: 1 });
@@ -849,7 +925,9 @@ describe('the keyboard edits a selected chord', () => {
     });
     const first = allNotes(store.getState().score!)[0]!;
     store.getState().setSelection({ eventIds: [first.id], measureIds: [], trackIds: [] });
-    const { container } = render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />);
+    const { container } = render(
+      <PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />,
+    );
     const before = allNotes(store.getState().score!).map((note) => note.id);
 
     fireEvent.pointerDown(key(container, 62), { pointerId: 1, shiftKey: true });
@@ -918,6 +996,8 @@ describe('PianoKeyboardView: MIDI keyboard input', () => {
     // The default fake reports unsupported; rendering must not throw, and no
     // device picker should ever be offered.
     const store = makeStore();
-    expect(() => render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />)).not.toThrow();
+    expect(() =>
+      render(<PianoKeyboardView midiInput={getAppServices().io.midiInput} store={store} />),
+    ).not.toThrow();
   });
 });

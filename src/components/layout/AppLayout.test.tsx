@@ -110,11 +110,7 @@ const stubNavigator: MusicNavigator = {
 };
 
 function renderLayout(ui: ReactElement) {
-  return render(
-    <NavigatorProvider value={stubNavigator}>
-      {withQueryClient(ui)}
-    </NavigatorProvider>,
-  );
+  return render(<NavigatorProvider value={stubNavigator}>{withQueryClient(ui)}</NavigatorProvider>);
 }
 
 describe('AppLayout', () => {

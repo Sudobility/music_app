@@ -127,8 +127,7 @@ const COLOUR_LITERAL = /#[0-9a-fA-F]{3,8}(?![\w-])|\b(?:rgba?|hsla?)\(\s*[\d.][^
  * Token backgrounds drawn behind nothing — a fill, a groove, a thumb — and so
  * owed no foreground. By file, each with why.
  */
-const ALLOWED_UNPAIRED: Readonly<Record<string, { classes: readonly string[]; why: string }>> = {
-};
+const ALLOWED_UNPAIRED: Readonly<Record<string, { classes: readonly string[]; why: string }>> = {};
 
 /** Backgrounds with a declared foreground: the ink that is legible on them. */
 const PAIRED_BACKGROUND = new RegExp(

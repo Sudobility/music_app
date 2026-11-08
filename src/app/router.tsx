@@ -315,21 +315,21 @@ export function AppRoutes({ store = useAppStore }: AppRouterProps) {
         <Route path="/" element={<LocalizedHomeRedirect />} />
         <Route path="/:lang" element={<LanguageValidator />}>
           <Route element={<NavLayout />}>
-          <Route element={<ScreenContainerLayout store={store} />}>
-            {/* Public. */}
-            <Route index element={<HomePage />} />
-            <Route path="community" element={<CommunityPage />} />
-            <Route path="resources" element={<ResourcesPage />} />
-            {/*
+            <Route element={<ScreenContainerLayout store={store} />}>
+              {/* Public. */}
+              <Route index element={<HomePage />} />
+              <Route path="community" element={<CommunityPage />} />
+              <Route path="resources" element={<ResourcesPage />} />
+              {/*
               Two routes, not one with an optional segment: `/docs` redirects
               to the first topic so the pane is never empty, and the topic in
               the URL is what makes a link into one section shareable.
             */}
-            <Route path="docs" element={<DocsPage />} />
-            <Route path="docs/:topicId" element={<DocsPage />} />
-            <Route path="settings" element={<SettingsPage store={store} />} />
-            <Route path="signin" element={<LoginPage />} />
-            {/*
+              <Route path="docs" element={<DocsPage />} />
+              <Route path="docs/:topicId" element={<DocsPage />} />
+              <Route path="settings" element={<SettingsPage store={store} />} />
+              <Route path="signin" element={<LoginPage />} />
+              {/*
               The normal shell (topbar, breadcrumbs, footer), like every other
               public page — it used to render full-bleed with none of that,
               which read as a page torn out of the rest of the site.
@@ -338,79 +338,79 @@ export function AppRoutes({ store = useAppStore }: AppRouterProps) {
               with its own internal scrolling rather than the shell's normal
               whole-page scroll.
             */}
-            <Route path="p/:publicId" element={<PublishedView />} />
+              <Route path="p/:publicId" element={<PublishedView />} />
 
-            {/* Needs an account. */}
-            <Route
-              path="projects"
-              element={
-                <ProtectedRoute>
-                  <DashboardRoute store={store} />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="credits"
-              element={
-                <ProtectedRoute>
-                  <CreditsPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="credits/history"
-              element={
-                <ProtectedRoute>
-                  <CreditsHistoryPage />
-                </ProtectedRoute>
-              }
-            />
-            {/*
+              {/* Needs an account. */}
+              <Route
+                path="projects"
+                element={
+                  <ProtectedRoute>
+                    <DashboardRoute store={store} />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="credits"
+                element={
+                  <ProtectedRoute>
+                    <CreditsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="credits/history"
+                element={
+                  <ProtectedRoute>
+                    <CreditsHistoryPage />
+                  </ProtectedRoute>
+                }
+              />
+              {/*
               Redeeming a coupon is part of the credits page now. The address
               it had is kept and sent there, so a link somebody saved still
               lands on the form rather than on a 404.
             */}
-            <Route path="credits/coupons" element={<Navigate to="../credits" replace />} />
-            <Route
-              path="entities"
-              element={
-                <ProtectedRoute>
-                  {CONSTANTS.SHOW_ENTITIES ? (
-                    <EntitiesPage />
-                  ) : (
-                    <Navigate to="../dashboard" replace />
-                  )}
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="dashboard"
-              element={
-                <ProtectedRoute>
-                  <UserDashboardPage />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
+              <Route path="credits/coupons" element={<Navigate to="../credits" replace />} />
+              <Route
+                path="entities"
+                element={
+                  <ProtectedRoute>
+                    {CONSTANTS.SHOW_ENTITIES ? (
+                      <EntitiesPage />
+                    ) : (
+                      <Navigate to="../dashboard" replace />
+                    )}
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="dashboard"
+                element={
+                  <ProtectedRoute>
+                    <UserDashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
 
-          <Route
-            path="project/:id"
-            element={
-              <ProtectedRoute>
-                <ProjectRoute store={store} />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="project/:id/print"
-            element={
-              <ProtectedRoute>
-                <PrintRoute store={store} />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="404" element={<NotFoundPage />} />
-          <Route path="*" element={<NotFoundRedirect />} />
+            <Route
+              path="project/:id"
+              element={
+                <ProtectedRoute>
+                  <ProjectRoute store={store} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="project/:id/print"
+              element={
+                <ProtectedRoute>
+                  <PrintRoute store={store} />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="404" element={<NotFoundPage />} />
+            <Route path="*" element={<NotFoundRedirect />} />
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/en/404" replace />} />
