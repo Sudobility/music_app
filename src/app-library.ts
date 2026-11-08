@@ -16,7 +16,6 @@ export * from '@sudobility/music_io';
 export * from '@sudobility/music_player';
 
 export * from './services/errors.js';
-export * from './services/export/export-plan.js';
 export * from './services/library-copy.js';
 export * from './services/playback/adapter.js';
 export * from './services/perf/benchmark.js';

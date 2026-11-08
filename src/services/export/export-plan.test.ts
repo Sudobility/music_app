@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { twoTrackScore } from '@sudobility/music_types/test';
 import type { Score } from '@sudobility/music_types';
 import { createEditingStore } from '@sudobility/music_editing';
-import { planExport } from './export-plan.js';
+import { planExport } from '@sudobility/music_lib';
 
 /** A bare editing store, built the way a document is. */
 function testEditingStore(score?: Score) {
