@@ -1,6 +1,8 @@
 import { commandLabel } from '@/app-library';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { testStoreContext, decodeMidi, decodeTracker } from '@/app-library';
+import type { MusicNavigator } from '@/app-library';
+import { NavigatorProvider } from '@sudobility/music_ui';
 import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createAppStore } from '@/app-library';
@@ -99,8 +101,20 @@ afterEach(async () => {});
  * Snapshot history reaches the server through music_client's hooks, and a hook
  * needs the React Query client `App.tsx` provides in production.
  */
+/** A no-op navigator so AppLayout's `useNavigator()` resolves in isolation. */
+const stubNavigator: MusicNavigator = {
+  go: () => {},
+  replace: () => {},
+  back: () => {},
+  current: () => null,
+};
+
 function renderLayout(ui: ReactElement) {
-  return render(withQueryClient(ui));
+  return render(
+    <NavigatorProvider value={stubNavigator}>
+      {withQueryClient(ui)}
+    </NavigatorProvider>,
+  );
 }
 
 describe('AppLayout', () => {
@@ -287,15 +301,25 @@ describe('AppLayout', () => {
     }
   });
 
-  it('"Back to dashboard" calls onNavigate("/projects")', async () => {
+  it('"Back to dashboard" navigates to the projects route', async () => {
     const store = await makeStoreWithProject();
-    const onNavigate = vi.fn();
-    renderLayout(<AppLayout store={store} onNavigate={onNavigate} />);
+    const go = vi.fn();
+    const nav: MusicNavigator = {
+      go,
+      replace: () => {},
+      back: () => {},
+      current: () => null,
+    };
+    render(
+      <NavigatorProvider value={nav}>
+        {withQueryClient(<AppLayout store={store} />)}
+      </NavigatorProvider>,
+    );
     const user = userEvent.setup();
 
     await user.click(screen.getByLabelText('Back to dashboard'));
 
-    expect(onNavigate).toHaveBeenCalledWith('/projects');
+    expect(go).toHaveBeenCalledWith('projects');
   });
 });
 
@@ -849,7 +873,11 @@ describe('a generating project: locked, not covered', () => {
     expect(store.getState().editLocked).toBe(true);
 
     vi.mocked(useProjectGeneration).mockReturnValue(IDLE_GENERATION);
-    view.rerender(withQueryClient(<AppLayout store={store} />));
+    view.rerender(
+      <NavigatorProvider value={stubNavigator}>
+        {withQueryClient(<AppLayout store={store} />)}
+      </NavigatorProvider>,
+    );
     expect(store.getState().editLocked).toBe(false);
     expect(screen.queryByTestId('generation-status-strip')).not.toBeInTheDocument();
   });

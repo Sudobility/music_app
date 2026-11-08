@@ -10,9 +10,12 @@
  */
 import { useMemo, type ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { extendRoutes, route, type Navigator } from '@sudobility/routing';
-import { createNavigatorContext } from '@sudobility/routing/react';
+import { extendRoutes, route } from '@sudobility/routing';
 import { musicRoutes } from '@sudobility/music_lib';
+import type { MusicNavigator } from '@sudobility/music_lib';
+// The Navigator context is owned by the shared UI library; this app only
+// supplies the react-router-backed Navigator and mounts the provider.
+import { NavigatorProvider, useNavigator } from '@sudobility/music_ui';
 
 /**
  * The full web route registry: the shared routes plus the web-only ones. Native
@@ -38,18 +41,16 @@ export const webRoutes = extendRoutes(musicRoutes, {
 });
 
 export type WebRoutes = typeof webRoutes.routes;
-export type WebNavigator = Navigator<WebRoutes>;
 
-const { NavigatorProvider, useNavigator } = createNavigatorContext<WebRoutes>();
-
-/** Navigate by route name. Must be used under {@link WebNavigatorProvider}. */
+/** Navigate by route name. The context is the shared UI library's; re-exported here. */
 export { useNavigator };
 
 /**
- * Builds the `Navigator` over react-router and the current language, and
- * provides it to the tree. Mounted once under `/:lang` so every screen (and the
- * shared UI inside them) can navigate by name; the `/:lang` prefix is applied
- * here so callers never think about it.
+ * Builds the shared `Navigator` (over the base music routes) on react-router and
+ * the current language, and provides it through the UI library's context so the
+ * shared UI navigates by name. The `/:lang` prefix is applied here. App-only
+ * routes (home, signin, print, 404…) are navigated by the app's own router,
+ * not through this contract.
  */
 export function WebNavigatorProvider({
   lang,
@@ -60,16 +61,19 @@ export function WebNavigatorProvider({
 }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const nav = useMemo<WebNavigator>(
+  const nav = useMemo<MusicNavigator>(
     () => ({
-      go: (name, params) => navigate(`/${lang}${webRoutes.build(name, params)}`),
+      go: (name, params) =>
+        navigate(`/${lang}${musicRoutes.build(name, params)}`),
       replace: (name, params) =>
-        navigate(`/${lang}${webRoutes.build(name, params)}`, { replace: true }),
+        navigate(`/${lang}${musicRoutes.build(name, params)}`, {
+          replace: true,
+        }),
       back: () => navigate(-1),
       current: () => {
         // Strip the leading `/:lang` segment, then match the rest.
         const path = location.pathname.replace(/^\/[^/]+/, '') || '/';
-        return webRoutes.parse(path);
+        return musicRoutes.parse(path);
       },
     }),
     [navigate, lang, location.pathname],
