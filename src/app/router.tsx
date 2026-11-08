@@ -5,12 +5,8 @@
  * the same shell with a non-scrollable page config (set by AppLayout).
  * `ProjectRoute` keeps the store's open project in sync with the URL.
  */
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CreditsHistoryPage } from '@/features/credits/CreditsHistoryPage';
-import { CreditsPage } from '@/features/credits/CreditsPage';
-import { EntitiesPage } from '@/features/entities/EntitiesPage';
-import { UserDashboardPage } from '@/features/dashboard/UserDashboardPage';
 import {
   BrowserRouter,
   Navigate,
@@ -21,24 +17,15 @@ import {
   useNavigate,
   useParams,
 } from 'react-router-dom';
-import { AppLayout } from '@/components/layout/AppLayout';
 import { ProjectLoading } from '@/components/layout/ProjectLoading';
 import { PaywallDialog } from '@/features/credits/PaywallDialog';
-import { DashboardPage } from '@/features/projects/DashboardPage';
 import { loadPrefs, playbackController, reportError, useAppStore } from '@/app-library';
 import type { EditorStoreApi } from '@/app-library';
 import { LanguageValidator as SharedLanguageValidator } from '@sudobility/components';
 import { ScreenContainer } from '@/components/shell/ScreenContainer';
-import { DocsPage } from '@/features/docs/DocsPage';
 import { ProtectedRoute } from '@/components/layout/ProtectedRoute';
 import { SignInModalProvider } from '@/features/auth/SignInModal';
-import { CommunityPage } from '@/features/community/CommunityPage';
-import { PublishedView } from '@/features/community/PublishedView';
-import HomePage from '@/pages/HomePage';
-import ResourcesPage from '@/pages/ResourcesPage';
-import LoginPage from '@/pages/LoginPage';
-import SettingsPage from '@/pages/SettingsPage';
-import { PrintView } from '@sudobility/music_ui';
+import { WebNavigatorProvider } from './navigation';
 import { useCurrentLanguage, useLocalizedNavigate } from '@/hooks/useLocalizedNavigate';
 import { isLanguageSupported } from '@/i18n';
 import { SUPPORTED_LANGUAGES } from '@/config/languages';
@@ -49,6 +36,53 @@ import {
   getMusicPositionSource,
   preferredLanguage,
 } from '@sudobility/music_types';
+
+/*
+  Route components are lazy, so each lands in its own chunk loaded on demand
+  rather than in the initial bundle. The editor (`AppLayout` + music_ui +
+  vexflow + three) and the print view are the heavy ones a marketing visitor
+  should never download; each content page splits too. Suspense boundaries:
+  `ScreenContainerLayout` wraps the content routes, and the editor/print routes
+  carry their own (they sit outside that layout).
+*/
+const AppLayout = lazy(() =>
+  import('@/components/layout/AppLayout').then((m) => ({ default: m.AppLayout })),
+);
+const PrintView = lazy(() =>
+  import('@sudobility/music_ui').then((m) => ({ default: m.PrintView })),
+);
+const DashboardPage = lazy(() =>
+  import('@/features/projects/DashboardPage').then((m) => ({ default: m.DashboardPage })),
+);
+const CreditsPage = lazy(() =>
+  import('@/features/credits/CreditsPage').then((m) => ({ default: m.CreditsPage })),
+);
+const CreditsHistoryPage = lazy(() =>
+  import('@/features/credits/CreditsHistoryPage').then((m) => ({
+    default: m.CreditsHistoryPage,
+  })),
+);
+const EntitiesPage = lazy(() =>
+  import('@/features/entities/EntitiesPage').then((m) => ({ default: m.EntitiesPage })),
+);
+const UserDashboardPage = lazy(() =>
+  import('@/features/dashboard/UserDashboardPage').then((m) => ({
+    default: m.UserDashboardPage,
+  })),
+);
+const DocsPage = lazy(() =>
+  import('@/features/docs/DocsPage').then((m) => ({ default: m.DocsPage })),
+);
+const CommunityPage = lazy(() =>
+  import('@/features/community/CommunityPage').then((m) => ({ default: m.CommunityPage })),
+);
+const PublishedView = lazy(() =>
+  import('@/features/community/PublishedView').then((m) => ({ default: m.PublishedView })),
+);
+const HomePage = lazy(() => import('@/pages/HomePage'));
+const ResourcesPage = lazy(() => import('@/pages/ResourcesPage'));
+const LoginPage = lazy(() => import('@/pages/LoginPage'));
+const SettingsPage = lazy(() => import('@/pages/SettingsPage'));
 
 export type AppRouterProps = {
   /** Defaults to the app-wide singleton (`useAppStore`); tests inject an isolated store via `createAppStore({ context })`. */
@@ -143,7 +177,25 @@ function PrintRoute({ store }: { store: EditorStoreApi }) {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const lang = useCurrentLanguage();
-  return <PrintView store={store} onBack={() => navigate(`/${lang}/project/${id ?? ''}`)} />;
+  return (
+    <Suspense fallback={<ProjectLoading />}>
+      <PrintView store={store} onBack={() => navigate(`/${lang}/project/${id ?? ''}`)} />
+    </Suspense>
+  );
+}
+
+/**
+ * Provides the shared `Navigator` (over react-router + the current language) to
+ * everything under `/:lang`. A pathless layout route, so it wraps both the
+ * content screens and the editor/print routes without changing any path.
+ */
+function NavLayout() {
+  const lang = useCurrentLanguage();
+  return (
+    <WebNavigatorProvider lang={lang}>
+      <Outlet />
+    </WebNavigatorProvider>
+  );
 }
 
 function ProjectRoute({ store }: { store: EditorStoreApi }) {
@@ -213,7 +265,11 @@ function ProjectRoute({ store }: { store: EditorStoreApi }) {
     the score is the right one means there is nothing stale to leak.
   */
   if (loading) return <ProjectLoading />;
-  return <AppLayout store={store} onNavigate={localizedNavigate} />;
+  return (
+    <Suspense fallback={<ProjectLoading />}>
+      <AppLayout store={store} onNavigate={localizedNavigate} />
+    </Suspense>
+  );
 }
 
 /**
@@ -258,6 +314,7 @@ export function AppRoutes({ store = useAppStore }: AppRouterProps) {
       <Routes>
         <Route path="/" element={<LocalizedHomeRedirect />} />
         <Route path="/:lang" element={<LanguageValidator />}>
+          <Route element={<NavLayout />}>
           <Route element={<ScreenContainerLayout store={store} />}>
             {/* Public. */}
             <Route index element={<HomePage />} />
@@ -354,6 +411,7 @@ export function AppRoutes({ store = useAppStore }: AppRouterProps) {
           />
           <Route path="404" element={<NotFoundPage />} />
           <Route path="*" element={<NotFoundRedirect />} />
+          </Route>
         </Route>
         <Route path="*" element={<Navigate to="/en/404" replace />} />
       </Routes>

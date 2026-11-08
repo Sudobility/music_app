@@ -13,7 +13,7 @@ import type {
   TransportPlaybackState,
   TransportSettings,
 } from '@sudobility/music_types';
-import type { IMusicPlayer } from '@sudobility/music_player/core';
+import type { IMusicPlayer } from '@sudobility/music_types';
 import { createEditingStore } from '@sudobility/music_editing';
 import type { EditingState, EditingStoreApi } from '@sudobility/music_editing';
 import { bindPlayer } from '@sudobility/music_lib';

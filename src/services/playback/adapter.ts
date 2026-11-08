@@ -22,7 +22,7 @@
  */
 import { getMusicPosition } from '@sudobility/music_types';
 import type { SoundingNote, TransportPlaybackState } from '@sudobility/music_types';
-import type { IMusicPlayer } from '@sudobility/music_player/core';
+import type { IMusicPlayer } from '@sudobility/music_types';
 import { getMusicPlayer } from '@sudobility/music_player/core';
 import type { PlayerFailure } from '@sudobility/music_types';
 import { bindPlayer } from '@sudobility/music_lib';

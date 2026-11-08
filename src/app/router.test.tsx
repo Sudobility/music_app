@@ -136,7 +136,10 @@ describe('AppRouter', () => {
 
     await waitFor(() => expect(store.getState().projectId).toBe(record.id));
     expect(playbackController.stop).toHaveBeenCalledTimes(1);
-    expect(screen.getByLabelText('Edit project title')).toHaveTextContent('Router Test Project');
+    // AppLayout is a lazy route chunk, so await it rather than reading synchronously.
+    expect(await screen.findByLabelText('Edit project title')).toHaveTextContent(
+      'Router Test Project',
+    );
   });
 
   /*

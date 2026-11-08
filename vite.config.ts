@@ -33,13 +33,33 @@ export default defineConfig({
     //
     // Vite base64s any asset under 4KB into the JS, and most of these are 16
     // or 32px favicons that fall well under it — 25 of the 38 did, adding
-    // ~49KB to the main bundle. There is no route-level code splitting here,
-    // so that lands on every visitor to pay for one page few of them open, and
-    // base64 gzips worse than the bytes it encodes. As emitted files they are
-    // fetched only by the page that shows them, and cached separately from the
-    // app.
+    // ~49KB to the main bundle. As emitted files they are fetched only by the
+    // page that shows them, and cached separately from the app.
     assetsInlineLimit: (filePath: string) =>
       filePath.includes('resource-icons') ? false : undefined,
+    rollupOptions: {
+      output: {
+        /*
+          Automatic vendor chunking — one chunk per npm package, derived from
+          the path, so there is no hand-maintained list to rot. Route-level
+          code (lazy `import()` in `router.tsx`) already splits into its own
+          chunks; this keeps third-party code out of them and in stable,
+          separately-cached per-package chunks. The React runtime is the one
+          grouping (react + react-dom + scheduler must load as a unit).
+        */
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return undefined;
+          const after = id.split('node_modules/').pop();
+          if (!after) return undefined;
+          const seg = after.split('/');
+          const pkg = seg[0].startsWith('@') ? `${seg[0]}/${seg[1]}` : seg[0];
+          if (pkg === 'react' || pkg === 'react-dom' || pkg === 'scheduler') {
+            return 'react';
+          }
+          return `vendor-${pkg.replace(/^@/, '').replace(/\//g, '-')}`;
+        },
+      },
+    },
   },
   // Exclude music_lib from dev-mode dep pre-bundling: esbuild's prebundle
   // doesn't process the lib's `new Worker(new URL(...))` calls, breaking the
