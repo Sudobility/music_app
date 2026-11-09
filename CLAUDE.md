@@ -12,7 +12,7 @@ score model, commands, rendering adapters, the Zustand store); every
 platform-bound capability — playback, XML parsing, file export, the MIDI codec —
 is an interface in `music_types` implemented by `music_io` (one import serves web
 and RN via a `react-native` export condition). Networking is `music_client`; the
-backend (OpenAI proxy + project persistence) is the sibling `music_api` repo. See
+backend (AI-model proxy + project persistence) is the sibling `music_api` repo. See
 `docs/architecture.md` for the full picture and request flows. **This repo is UI
 and only UI — if you are about to write score maths, a command, an adapter or a
 store slice, it belongs in a library.**
@@ -39,7 +39,7 @@ layout order and copy are the source of truth, pinned cross-app from the RN side
 - `bun run verify` — typecheck + lint + test:unit + build. Before any push.
 - `bun run test:unit` / `bun run test:watch` — Vitest
 - `bun run test:e2e` — Playwright (`e2e/*.spec.ts`); boots `music_api` from `../music_api`
-  (`AI_TEST_MODE=1`, no real OpenAI) and the dev server (`VITE_E2E=1`) — needs a local
+  (`AI_TEST_MODE=1`, no real model calls) and the dev server (`VITE_E2E=1`) — needs a local
   Postgres `music_test` DB and `../music_api`'s deps installed. Kill anything on 5039/8023
   first (`reuseExistingServer` silently attaches otherwise).
 - `bun run build` — `tsc -b && vite build`
@@ -72,13 +72,10 @@ after a library update points at an old home; fix the import, not with a shim.
   builders, credits, device prefs. **Re-exports `music_types` and `music_editing`**, so a
   name from either resolves through `music_lib` too.
 
-Placement rules (the user's): type definitions and vocabulary → `music_types`; pure
-helpers used by both frontend and backend → `music_types`; `music_editing` is editing
-only. **Canvas geometry is `music_drawing`'s; app layout geometry stays here** — the
-line is the canvas edge. Anything reasoning about the _drawn score_ (where a note went,
-which measure/track a point lands in, stave-position pitch, playing-measure position,
-VexFlow colours) is `music_drawing`'s, because two apps draw the same score; a scroll
-container or panel is this app's.
+Placement rules (the user's): types & vocabulary and pure frontend+backend helpers → `music_types`;
+`music_editing` is editing only. **The canvas edge is the boundary** — anything reasoning about the
+_drawn score_ (where a note went, which measure/track a point lands in, stave-position pitch, VexFlow
+colours) is `music_drawing`'s (two apps draw the same score); a scroll container or panel is this app's.
 
 ## Gotchas
 
@@ -128,24 +125,21 @@ container or panel is this app's.
   when English is copied across). A string with no key is invisible to every parity test —
   grep `aria-label={'` / `ariaLabel: '` before adding a control; the fix is always a key.
   Published vocabularies carry their own `labelKey` (a wrong one prints the key).
-- **Cross-app copy parity lives in `music_app_rn`** (798 shared keys, this app authoritative),
-  because only a test that sees both hosts can see it.
+- **Cross-app copy parity lives in `music_app_rn`** (this app authoritative) — only a test that sees both hosts can catch it.
 
 ### Build & dependency model
 
 - **Keep `music_synth` out of Vite dep pre-bundling** (`optimizeDeps.exclude`, beside
   `music_lib`/`music_io`/`music_player`): it lazily `import('js-synthesizer')` and the
   pre-bundler resolves worklet asset URLs wrong — symptom is a blank page, no console error.
-- **`resolve.dedupe: ['react','react-dom','zustand']`** — a local `bun link` of music_lib
+- **`resolve.dedupe: ['react','react-dom','zustand','three']`** — a local `bun link` of music_lib
   exposes a second React and breaks every hook. Don't remove.
 - **rsync-ing a local `@sudobility/*` build requires deleting `node_modules/.vite`** (Vite
-  pre-bundles, else the browser runs stale code). `bun run build` doesn't clean `dist` —
-  `bun run clean && bun run build` first. Any `bun add`/`bun remove` reinstalls from the
-  registry and replaces what you rsynced — re-sync after.
+  pre-bundles, else the browser runs stale code); `bun run build` doesn't clean `dist/`, so clear it
+  first. Any `bun add`/`bun remove` reinstalls from the registry and replaces what you rsynced — re-sync after.
 - **The app owns the platform synth**: `music_synth` declares `js-synthesizer` an optional
   peer, so this app adds it; a fresh install fails loudly rather than shipping wrong audio.
-- **There is no worker in this stack** — quantize and MIDI import run synchronously; don't
-  reintroduce one without measuring (`postMessage` structure-clones both ways).
+- **There is no worker in this stack** — quantize and MIDI import run synchronously; don't reintroduce one without measuring.
 - **music_lib is told about its environment, never sniffs it** — `setErrorLogging(DEV)`;
   reading `import.meta.env` in a lib breaks RN at parse time (guard test forbids it).
 - **`consumables_client` is inlined in `test.server.deps`** (like `music_lib`): it's `tsc`
@@ -189,21 +183,18 @@ container or panel is this app's.
 
 ## Structure
 
-- `src/app/` — `App.tsx` (composition root), `theme.ts`, `router.tsx`, `AuthContext.tsx`
+Conventional `src/{app,components,features,pages,config}` (`App.tsx` is the composition root,
+`features/` holds `score-editor/`, `generation/`, `projects/`, `auth/`, `snapshots/`,
+`community/`, `docs/`). The non-obvious bits:
+
 - `src/config/initialize.ts` — the actual construction: `createMusicIo()`, the web player
   (`config/web-player.ts`: `music_player` scheduler over `music_synth`), `MusicClient`,
   auth/e2e backend, prefs storage, `music_lib`'s `StoreContext`
-- `src/components/` — `layout/`, `transport/`, `inspector/`, `dialogs/`, `shell/`
-- `src/features/` — `score-editor/` (ScoreEditorView, EditorToolbar, hit-test, render-theme),
-  `piano-keyboard/`, `generation/`, `projects/`, `auth/`, `snapshots/`, `community/`, `docs/`
-- `src/pages/` — content pages (`HomePage`, `ResourcesPage`, `LoginPage`, `SettingsPage`)
 - `src/stubs/` — stand-ins for `building_blocks`' optional peer deps, aliased in `vite.config.ts`
-- `src/test/` — `app-services.ts` (`installTestAppServices`), `query.tsx`, `setup.ts`
-- `e2e/` — Playwright specs + `global-setup.ts` (truncates `music_test`, needs `CASCADE`)
-- `docs/` — `architecture.md`, `parity-checklist.md`, `spec.md`
+- `src/test/app-services.ts` — `installTestAppServices`/`resetTestAppServices` (+ `query.tsx`, `setup.ts`)
+- `e2e/global-setup.ts` — Playwright setup; truncates `music_test` (needs `CASCADE`)
 
 ## Related projects
 
-`music_types` · `music_codecs` · `music_drawing` · `music_player` · `music_synth` ·
-`music_io` · `music_editing` · `music_client` · `music_lib` · `music_app_rn` ·
-`music_api` (backend: Hono + Drizzle + PostgreSQL, private)
+`music_types` · `music_codecs` · `music_drawing` · `music_player` · `music_synth` · `music_io` ·
+`music_editing` · `music_client` · `music_lib` · `music_app_rn` · `music_api` (backend: Hono + Drizzle + PostgreSQL, private)
