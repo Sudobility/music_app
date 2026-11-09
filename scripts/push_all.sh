@@ -69,6 +69,8 @@ PROJECTS=(
     # music_app installs from this one, so it is the publish most worth waiting
     # on. Under the poll the number costs nothing when CI is quick.
     "../music_lib:60"
+    "../music_ui:0"
+    "../music_ui_rn:60"
     "../music_app:0"
     # The native app, last: it depends on the whole chain above and nothing
     # depends on it. `private: true`, so nothing is published to npm — this
