@@ -62,6 +62,7 @@ PROJECTS=(
     # here — it sits directly before music_lib because that is what consumes
     # it, and it needs its own wait for the same reason the packages above do:
     # music_lib resolves it from npm, so the publish has to land first.
+    "../midi_transcriber_api:0"
     "../music_io:0"
     "../music_editing:0"
     "../music_api:0"
@@ -71,7 +72,6 @@ PROJECTS=(
     "../music_lib:60"
     "../music_ui:0"
     "../music_ui_rn:60"
-    "../music_app:0"
     # The native app, last: it depends on the whole chain above and nothing
     # depends on it. `private: true`, so nothing is published to npm — this
     # entry exists to version, commit and push it like every other repo.
@@ -80,10 +80,10 @@ PROJECTS=(
     # time, not built here), which the shared script handles by skipping that
     # check. Its Jest component suite runs under `test:components` rather than
     # `test`, so `bun run test` covers the vitest half only.
+    "../music_app:0"
     "../music_app_rn:0"
     "../music_player_app_rn:0"
     "../music_harness:0"
-    "../midi_transcriber_api:0"
 )
 
 # Source reusable script: prefer local workflows repo, fall back to GitHub
