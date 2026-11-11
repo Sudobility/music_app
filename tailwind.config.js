@@ -16,6 +16,7 @@ export default {
     // nothing for the rest: the coupon form's button had no background.
     './node_modules/@sudobility/consumables_pages/dist/**/*.js',
     './node_modules/@sudobility/entity_pages/dist/**/*.js',
+    './node_modules/@sudobility/resources_pages/dist/**/*.js',
   ],
   darkMode: 'class',
   theme: {

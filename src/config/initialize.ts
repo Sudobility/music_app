@@ -26,6 +26,7 @@ import {
 import type { NetworkClient, NetworkRequestOptions, NetworkResponse } from '@sudobility/types';
 import { ConsumablesApiClient, initializeConsumables } from '@sudobility/consumables_client';
 import type { ConsumablesAdapter } from '@sudobility/consumables_client';
+import { ResourcesApiClient, initializeResources } from '@sudobility/resources_client';
 import { EntityClient } from '@sudobility/entity_client';
 import {
   configureConsumablesWebAdapter,
@@ -438,6 +439,15 @@ export function initializeApp(): AppServices {
   initializeConsumables({
     adapter: revenueCatKey ? createConsumablesWebAdapter() : unconfiguredPurchasing(),
     apiClient: consumablesApiClient,
+  });
+  // Resources catalog (public, read-only). It hits this app's own
+  // /api/v1/resources, which forwards to sudobility_api — so baseUrl carries
+  // the /api/v1 prefix the resources_client appends `/resources` to.
+  initializeResources({
+    apiClient: new ResourcesApiClient({
+      baseUrl: `${baseUrl}/api/v1`,
+      networkClient: authenticatedNetworkClient,
+    }),
   });
   const prefsStorage: PrefsStorage = {
     getItem: (key) => window.localStorage.getItem(key),

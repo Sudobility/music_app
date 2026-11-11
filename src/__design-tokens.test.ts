@@ -36,10 +36,9 @@ import { generateThemeCSS, swissTheme } from '@sudobility/design/themes';
  * else is a colour somebody reached for because it was to hand.
  */
 const ALLOWED_PALETTE: Readonly<Record<string, { classes: readonly string[]; why: string }>> = {
-  'src/pages/ResourcesPage.tsx': {
-    classes: ['bg-white', 'ring-black/10', 'text-neutral-500'],
-    why: "Other sites' logos sit on one light chip in both themes; many are solid black on transparent and vanish on a dark surface.",
-  },
+  // ResourcesPage no longer renders its own logo chip — the resource tiles (icon
+  // included) now come from @sudobility/resources_pages, which owns that styling
+  // in its own design-system guard. No palette exceptions remain in this app.
 };
 
 /**
