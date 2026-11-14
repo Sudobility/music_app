@@ -15,7 +15,19 @@ export default defineConfig({
     // `three` joins the list for the same reason: `@sudobility/music_spatial`/
     // `music_spatial_core` bring their own dev-installed `three` too, and
     // `@react-three/fiber` breaks the same way on two instances of it.
-    dedupe: ['react', 'react-dom', 'zustand', 'three'],
+    dedupe: [
+      'react',
+      'react-dom',
+      'zustand',
+      'three',
+      // building_blocks is bun-linked (a symlink) in local dev; without these
+      // its own imports resolve into the sibling's node_modules (a 2nd copy).
+      '@sudobility/building_blocks',
+      '@sudobility/components',
+      '@sudobility/di_web',
+      '@sudobility/di',
+      '@sudobility/types',
+    ],
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       // Stub out @sudobility/building_blocks' optional peer deps we don't

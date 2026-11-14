@@ -8,7 +8,9 @@ export default {
     './src/**/*.{js,ts,jsx,tsx}',
     './node_modules/@sudobility/components/**/*.{js,jsx,ts,tsx}',
     './node_modules/@sudobility/music_ui/{src,dist}/**/*.{js,jsx,ts,tsx}',
-    './node_modules/@sudobility/building_blocks/**/*.{js,jsx,ts,tsx}',
+    // Scoped to dist (not **): building_blocks is bun-linked (a symlink) in
+    // local dev, so a bare ** follows it into the sibling's node_modules.
+    './node_modules/@sudobility/building_blocks/dist/**/*.{js,jsx}',
     './node_modules/@sudobility/design/**/*.{js,jsx,ts,tsx}',
     './node_modules/@sudobility/auth-components/**/*.{js,jsx,ts,tsx}',
     // Every package that renders markup of its own. One that is missing here
