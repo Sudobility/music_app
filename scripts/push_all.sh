@@ -83,7 +83,6 @@ PROJECTS=(
     "../music_app:0"
     "../music_app_rn:0"
     "../music_player_app_rn:0"
-    "../music_harness:0"
 )
 
 # Source reusable script: prefer local workflows repo, fall back to GitHub
