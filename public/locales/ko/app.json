@@ -1114,7 +1114,8 @@
       "symphonySmall": "Symphony (Chamber)",
       "symphonyMedium": "Symphony (Classical)",
       "symphonyLarge": "Symphony (Romantic)",
-      "march": "March"
+      "march": "March",
+      "bollywood": "Bollywood"
     },
     "moodName": {
       "gentle": "부드러움",

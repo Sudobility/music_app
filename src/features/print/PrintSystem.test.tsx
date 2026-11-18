@@ -40,11 +40,8 @@ describe('PrintSystem', () => {
     expect(container.querySelector('canvas')!.style.width).toBe('100%');
   });
 
-  it('is a block a page break may not fall inside', () => {
-    // This is what puts breaks between systems rather than through one.
-    const { score, slice } = firstSlice();
-    const { container } = render(<PrintSystem score={score} slice={slice} trackIds={[]} />);
-    const wrapper = container.firstElementChild as HTMLElement;
-    expect(wrapper.style.breakInside).toBe('avoid');
-  });
+  // The never-break-across-a-page rule no longer lives on `PrintSystem`'s own
+  // element: it moved to the `PrintSlice` wrapper (`@sudobility/printing`) that
+  // `PrintView` puts around each system, so the rule is in one shared place
+  // rather than inlined here. It is covered where it now belongs.
 });

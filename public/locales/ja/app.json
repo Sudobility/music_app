@@ -1114,7 +1114,8 @@
       "symphonySmall": "交響曲（室内楽）",
       "symphonyMedium": "交響曲（古典派）",
       "symphonyLarge": "交響曲（ロマン派）",
-      "march": "行進曲"
+      "march": "行進曲",
+      "bollywood": "ボリウッド"
     },
     "moodName": {
       "gentle": "穏やか",

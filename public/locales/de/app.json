@@ -1114,7 +1114,8 @@
       "symphonySmall": "Sinfonie (Kammer)",
       "symphonyMedium": "Sinfonie (Klassik)",
       "symphonyLarge": "Sinfonie (Romantik)",
-      "march": "Marsch"
+      "march": "Marsch",
+      "bollywood": "Bollywood"
     },
     "moodName": {
       "gentle": "Sanft",

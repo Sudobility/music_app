@@ -139,6 +139,34 @@ describe('bindPlayer', () => {
     expect(player.calls.load).toHaveLength(2);
   });
 
+  it('previews the auto-moving listener live — applyMix, no reload, no command', () => {
+    // Auto mode (Wander) walks the listener continuously; it is heard but
+    // never written to the score, so it drives the live mix through applyMix
+    // and leaves `score.unplugged` — and so the undo history — untouched.
+    const store = testEditingStore(twoTrackScore());
+    const player = fakePlayer();
+    bindPlayer(player, store);
+    store.getState().setUnpluggedActive(true); // one reload, into the stage mix
+    player.emitTransport('playing');
+    expect(player.calls.load).toHaveLength(2);
+
+    store.getState().setUnpluggedListenerPreview({ x: 2, z: 1, facingDeg: 45 });
+    store.getState().setUnpluggedListenerPreview({ x: -2, z: 3, facingDeg: 10 });
+    store.getState().setUnpluggedListenerPreview(null); // reverts to committed
+
+    expect(player.calls.applyMix).toHaveLength(3);
+    expect(player.calls.load).toHaveLength(2); // never reloaded
+    expect(store.getState().score!.unplugged).toBeUndefined(); // score untouched
+  });
+
+  it('ignores a listener preview while Unplugged is not the active mix', () => {
+    const store = testEditingStore(twoTrackScore());
+    const player = fakePlayer();
+    bindPlayer(player, store);
+    store.getState().setUnpluggedListenerPreview({ x: 1, z: 1, facingDeg: 0 });
+    expect(player.calls.applyMix ?? []).toHaveLength(0);
+  });
+
   it('clears the selection on play, and pauses when already playing', async () => {
     const store = testEditingStore(twoTrackScore());
     const player = fakePlayer();
