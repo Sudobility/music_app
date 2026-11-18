@@ -139,10 +139,11 @@ describe('bindPlayer', () => {
     expect(player.calls.load).toHaveLength(2);
   });
 
-  it('previews the auto-moving listener live — applyMix, no reload, no command', () => {
-    // Auto mode (Wander) walks the listener continuously; it is heard but
-    // never written to the score, so it drives the live mix through applyMix
-    // and leaves `score.unplugged` — and so the undo history — untouched.
+  it('hears an auto-moving listener from the score itself — one location, kept when the walk ends', () => {
+    // Auto mode (Wander) commits each step to `score.unplugged.listener`,
+    // exactly as a drag does. There is no second "previewed" position: the
+    // mix the engine is handed is computed from the score, so what is heard
+    // is what is drawn, and where the walk ends is where the listener stays.
     const store = testEditingStore(twoTrackScore());
     const player = fakePlayer();
     bindPlayer(player, store);
@@ -150,21 +151,19 @@ describe('bindPlayer', () => {
     player.emitTransport('playing');
     expect(player.calls.load).toHaveLength(2);
 
-    store.getState().setUnpluggedListenerPreview({ x: 2, z: 1, facingDeg: 45 });
-    store.getState().setUnpluggedListenerPreview({ x: -2, z: 3, facingDeg: 10 });
-    store.getState().setUnpluggedListenerPreview(null); // reverts to committed
+    store.getState().setUnpluggedListener({ x: 2, z: 1, facingDeg: 45 });
+    const first = JSON.stringify(player.calls.applyMix!.at(-1));
+    store.getState().setUnpluggedListener({ x: -2, z: 3, facingDeg: 10 });
+    const second = JSON.stringify(player.calls.applyMix!.at(-1));
 
-    expect(player.calls.applyMix).toHaveLength(3);
+    expect(player.calls.applyMix).toHaveLength(2);
+    expect(second).not.toBe(first); // the mix follows the walk
     expect(player.calls.load).toHaveLength(2); // never reloaded
-    expect(store.getState().score!.unplugged).toBeUndefined(); // score untouched
-  });
-
-  it('ignores a listener preview while Unplugged is not the active mix', () => {
-    const store = testEditingStore(twoTrackScore());
-    const player = fakePlayer();
-    bindPlayer(player, store);
-    store.getState().setUnpluggedListenerPreview({ x: 1, z: 1, facingDeg: 0 });
-    expect(player.calls.applyMix ?? []).toHaveLength(0);
+    expect(store.getState().score!.unplugged!.listener).toEqual({
+      x: -2,
+      z: 3,
+      facingDeg: 10,
+    });
   });
 
   it('clears the selection on play, and pauses when already playing', async () => {
