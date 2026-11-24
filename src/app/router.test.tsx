@@ -45,6 +45,26 @@ afterEach(() => {
   resetMusicPosition();
 });
 
+/*
+  Testing Library's findBy / waitFor budget is 1000ms and is independent of
+  vitest's `testTimeout` (30s) — so raising that buys these waits nothing.
+  Several routes here mount a lazy chunk (the editor, the dashboard, the print
+  and snapshot views) and only then settle an async fetch; under a full
+  parallel run, with four heavyweight workers contending, that round trip
+  routinely passes 1000ms even though each test passes comfortably in
+  isolation. The symptom is a `findBy` that gives up on the loading spinner and
+  reads as flakiness — it cost a release once, stopping `push_all` on music_app
+  with `Tests failed` while every file passed alone.
+
+  The fix is an explicit, generous budget on the waits that cross a chunk load,
+  per the rule that a longer wait belongs on the test that needs it. It is
+  deliberately NOT set globally via `configure({ asyncUtilTimeout })`: that was
+  tried and made things worse — every wait in the suite then retried for ten
+  seconds, so a genuinely failing assertion stayed alive long enough to surface
+  inside the following test, turning a clear failure into a confusing one.
+*/
+const ROUTE_CHANGE = { timeout: 10_000 };
+
 describe('AppRouter', () => {
   it('redirects "/" to the localized home page', async () => {
     const store = makeStore();
@@ -107,14 +127,16 @@ describe('AppRouter', () => {
       ),
     );
 
-    await waitFor(() =>
-      // The dashboard's own search field, not the app name. It used to be the
-      // page heading, which is gone — the top bar already names the app, and a
-      // second copy of the name only took width from the search field. This is
-      // also what `gotoDashboard` waits on in the e2e suite, and for the older
-      // reason too: VITE_APP_NAME is configurable, so anything keyed to it
-      // passes in CI and fails on a machine whose .env rebrands the app.
-      expect(screen.getByLabelText('Search projects')).toBeInTheDocument(),
+    await waitFor(
+      () =>
+        // The dashboard's own search field, not the app name. It used to be the
+        // page heading, which is gone — the top bar already names the app, and a
+        // second copy of the name only took width from the search field. This is
+        // also what `gotoDashboard` waits on in the e2e suite, and for the older
+        // reason too: VITE_APP_NAME is configurable, so anything keyed to it
+        // passes in CI and fails on a machine whose .env rebrands the app.
+        expect(screen.getByLabelText('Search projects')).toBeInTheDocument(),
+      ROUTE_CHANGE,
     );
   });
 
@@ -137,9 +159,9 @@ describe('AppRouter', () => {
     await waitFor(() => expect(store.getState().projectId).toBe(record.id));
     expect(playbackController.stop).toHaveBeenCalledTimes(1);
     // AppLayout is a lazy route chunk, so await it rather than reading synchronously.
-    expect(await screen.findByLabelText('Edit project title')).toHaveTextContent(
-      'Router Test Project',
-    );
+    expect(
+      await screen.findByLabelText('Edit project title', undefined, ROUTE_CHANGE),
+    ).toHaveTextContent('Router Test Project');
   });
 
   /*
@@ -193,8 +215,9 @@ describe('AppRouter', () => {
 
     release();
 
-    await waitFor(() =>
-      expect(screen.getByLabelText('Edit project title')).toHaveTextContent('The New One'),
+    await waitFor(
+      () => expect(screen.getByLabelText('Edit project title')).toHaveTextContent('The New One'),
+      ROUTE_CHANGE,
     );
     expect(screen.queryByTestId('project-loading')).not.toBeInTheDocument();
   });
@@ -212,7 +235,7 @@ describe('AppRouter', () => {
       ),
     );
 
-    expect(await screen.findByRole('button', { name: 'Print' })).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: 'Print' }, ROUTE_CHANGE)).toBeInTheDocument();
   });
 
   it('an unknown path with no language segment redirects to the English 404 page', async () => {
@@ -298,24 +321,10 @@ describe('AppRouter', () => {
       ),
     );
 
-    /*
-      An explicit budget, on this test only.
-
-      `waitFor` gives up after **1000ms**, independent of vitest's
-      `testTimeout` — so raising that to 30s bought this nothing, and it failed
-      only in a full parallel run while passing every time in isolation. That
-      reads as flakiness and is really an assertion that gave up after a
-      second, waiting for a whole route change: the editor mounts, its load of
-      a nonexistent project rejects, the router navigates, and a data-fetching
-      dashboard mounts in its place.
-
-      Deliberately *not* raised globally with `configure({ asyncUtilTimeout })`.
-      That was tried and made things worse: with every wait in the suite
-      retrying for ten seconds, a failing assertion stayed alive long enough to
-      surface inside the following test, turning a clear failure into a
-      confusing one. A longer wait belongs on the test that needs it.
-    */
-    const ROUTE_CHANGE = { timeout: 10_000 };
+    // This route change is slow by nature — the editor mounts, its load of a
+    // nonexistent project rejects, the router navigates, and a data-fetching
+    // dashboard mounts in its place — so it needs the generous budget. See the
+    // note on ROUTE_CHANGE above for why it is per-wait and not global.
     await waitFor(() => expect(window.location.pathname).toBe('/en/projects'), ROUTE_CHANGE);
     // The dashboard's own search field — see above for why it is not the name.
     await screen.findByLabelText('Search projects', undefined, ROUTE_CHANGE);
@@ -352,7 +361,10 @@ describe('AppRouter', () => {
 
     // Two, once loaded: the breadcrumb trail's current crumb and the page's
     // own header, which still names what it plays alongside the Share button.
-    await waitFor(() => expect(screen.getAllByText('My Song Version 1').length).toBe(2));
+    await waitFor(
+      () => expect(screen.getAllByText('My Song Version 1').length).toBe(2),
+      ROUTE_CHANGE,
+    );
     // The shell's own landmarks, from AppPageLayout's `<header>`/`<footer>`
     // (and the topbar's own nested `<header>`) — present regardless of what's
     // inside them, so this does not need to know the topbar/footer's own
