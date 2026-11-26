@@ -1,6 +1,6 @@
 {
   "name": "scoresmith",
-  "version": "0.2.231",
+  "version": "0.2.232",
   "description": "ScoreSmith - a browser-based AI-assisted sheet-music composition app",
   "private": true,
   "type": "module",
@@ -40,15 +40,15 @@
     "@react-three/fiber": "~9.8.2",
     "@revenuecat/purchases-js": "~1.73.1",
     "@sudobility/auth_lib": "^0.0.134",
-    "@sudobility/building_blocks": "^0.0.392",
-    "@sudobility/components": "^5.3.76",
+    "@sudobility/building_blocks": "^0.0.394",
+    "@sudobility/components": "^5.3.78",
     "@sudobility/consumables_client": "^0.0.45",
     "@sudobility/consumables_pages": "^0.0.80",
     "@sudobility/design": "^1.1.72",
     "@sudobility/di": "^1.5.91",
-    "@sudobility/di_web": "^0.1.292",
+    "@sudobility/di_web": "^0.1.293",
     "@sudobility/entity_client": "^0.0.63",
-    "@sudobility/entity_pages": "^0.0.231",
+    "@sudobility/entity_pages": "^0.0.233",
     "@sudobility/music_client": "^0.4.113",
     "@sudobility/music_codecs": "^0.2.72",
     "@sudobility/music_drawing": "^0.2.0",
@@ -122,6 +122,6 @@
     "url": "https://github.com/Sudobility/music_app.git"
   },
   "peerDependencies": {
-    "@sudobility/components": "^5.3.76"
+    "@sudobility/components": "^5.3.78"
   }
 }
